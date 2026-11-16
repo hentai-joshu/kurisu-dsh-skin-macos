@@ -1,8 +1,8 @@
 import fs from 'node:fs';
 import path from 'node:path';
 
-const asar = 'D:\\Users\\tohno\\AppData\\Local\\Programs\\DSH NEXT\\resources\\app.asar';
-const out = 'D:\\MyDocument\\deepseek harness\\kurisu-skin\\research\\frontend-css';
+const asar = '<install>\AppData\\Local\\Programs\\DSH NEXT\\resources\\app.asar';
+const out = '<workspace>\\kurisu-skin\\research\\frontend-css';
 const buf = fs.readFileSync(asar);
 const headerLen = buf.readUInt32LE(12);
 const header = JSON.parse(buf.subarray(16, 16 + headerLen).toString('utf8').replace(/\0+$/, ''));

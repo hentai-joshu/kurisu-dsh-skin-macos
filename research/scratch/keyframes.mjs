@@ -2,8 +2,8 @@
 import fs from 'node:fs';
 import path from 'node:path';
 const dirs = [
-  'D:\\MyDocument\\deepseek harness\\kurisu-skin\\research\\frontend-css',
-  'D:\\MyDocument\\deepseek harness\\kurisu-skin\\research\\embedded-css',
+  '<workspace>\\kurisu-skin\\research\\frontend-css',
+  '<workspace>\\kurisu-skin\\research\\embedded-css',
 ];
 function walk(d, cb) {
   for (const e of fs.readdirSync(d, { withFileTypes: true })) {

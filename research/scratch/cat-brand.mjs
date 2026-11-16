@@ -1,5 +1,5 @@
 import fs from 'node:fs';
-const file='D:\\Users\\tohno\\AppData\\Local\\Programs\\DSH NEXT\\resources\\app.asar';
+const file='<install>\AppData\\Local\\Programs\\DSH NEXT\\resources\\app.asar';
 const buf=fs.readFileSync(file);
 const asarHeader = JSON.parse(buf.subarray(16, 16 + buf.readUInt32LE(12)).toString('utf8'));
 const base = 16 + 8;

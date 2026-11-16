@@ -117,10 +117,10 @@ authoritative current byte count.
 ## Commands
 
 Use the bundled node explicitly (node.exe is **not** on PATH). Run from the
-workspace root `D:\MyDocument\deepseek harness`:
+workspace root `<workspace>`:
 
 ```powershell
-$node = 'C:\Users\tohno\.dsh\dsh-runtimes\dsh-next-primary-runtime\dependencies\node\bin\node.exe'
+$node = '<home>\.dsh\dsh-runtimes\dsh-next-primary-runtime\dependencies\node\bin\node.exe'
 
 # 1. End-to-end proof on a tiny synthetic asar (never touches app.asar).
 #    39 checks: surgery invariants, node --check on 3 scripts, UTF-8 round trip,

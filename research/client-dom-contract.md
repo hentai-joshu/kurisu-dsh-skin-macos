@@ -1,14 +1,14 @@
 # Kurisu skin — live DOM contract (DSH Desktop NEXT)
 
 Investigation date: 2026-11-08. Read-only. Source archive:
-`D:\Users\tohno\AppData\Local\Programs\DSH NEXT\resources\app.asar`
+`<install>\AppData\Local\Programs\DSH NEXT\resources\app.asar`
 (`app.asar!/…` below = a path inside that archive). Extracted copies live under
-`D:\MyDocument\deepseek harness\kurisu-skin\research\`; abbreviations:
+`<workspace>\kurisu-skin\research\`; abbreviations:
 
 * **`$X`** = `…\research\asar-extract\node_modules\@deepseek-ai\`
 * **`$E`** = `…\research\embedded-css\` (shipped CSS de-embedded from the JS bundles; one rule per line so line numbers are quotable)
 * **`$F`** = `…\research\frontend-css\` (raw `.css` files pulled from the asar by `extract-css.mjs`)
-* **`$P`** = `C:\Users\tohno\.dsh\profiles\desktop\node_modules\` (installed profile plugins — read only)
+* **`$P`** = `<home>\.dsh\profiles\desktop\node_modules\` (installed profile plugins — read only)
 
 Everything is **observed in shipped source** unless marked `[inference]`.
 Build: `dsh-desktop-next 2.0.19-next` / `@deepseek-ai/dsh-*` `0.2.1-rc.2`

@@ -1,5 +1,5 @@
 import fs from 'node:fs';
-const file='D:\\Users\\tohno\\AppData\\Local\\Programs\\DSH NEXT\\resources\\app.asar';
+const file='<install>\AppData\\Local\\Programs\\DSH NEXT\\resources\\app.asar';
 const buf=fs.readFileSync(file);
 function findAll(needle){
   const b=Buffer.from(needle,'utf8'); const out=[]; let at=buf.indexOf(b);

@@ -1,5 +1,5 @@
 import fs from 'node:fs';
-const p = 'D:\\Users\\tohno\\AppData\\Local\\Programs\\DSH NEXT\\resources\\app.asar';
+const p = '<install>\AppData\\Local\\Programs\\DSH NEXT\\resources\\app.asar';
 const fd = fs.openSync(p, 'r');
 const h = Buffer.alloc(16);
 fs.readSync(fd, h, 0, 16, 0);

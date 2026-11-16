@@ -2,7 +2,7 @@
 // node asargrep.mjs <needle> [caseInsensitive=i] [maxHits=40] [extFilter=.js|.css|.json|...|*]
 import fs from 'node:fs';
 import path from 'node:path';
-const asar = 'D:\\Users\\tohno\\AppData\\Local\\Programs\\DSH NEXT\\resources\\app.asar';
+const asar = '<install>\AppData\\Local\\Programs\\DSH NEXT\\resources\\app.asar';
 const unpackedRoot = asar + '.unpacked';
 const buf = fs.readFileSync(asar);
 const headerLen = buf.readUInt32LE(12);

@@ -3,7 +3,7 @@
 import fs from 'node:fs';
 import { buildLoadingStyle } from './payload.mjs';
 
-const ASAR = 'D:\\Users\\tohno\\AppData\\Local\\Programs\\DSH NEXT\\resources\\app.asar';
+const ASAR = '<install>\AppData\\Local\\Programs\\DSH NEXT\\resources\\app.asar';
 const fd = fs.openSync(ASAR, 'r');
 const h = Buffer.alloc(16);
 fs.readSync(fd, h, 0, 16, 0);

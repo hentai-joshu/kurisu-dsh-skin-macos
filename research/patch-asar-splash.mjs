@@ -46,7 +46,7 @@ const ENV_BACKUP = process.env.KS_SPLASH_BACKUP_DIR || '';
 const BDIR = ENV_BACKUP || BACKUP_DIR;
 
 export const CONFIG = {
-  asar: ENV_ASAR || 'D:\\Users\\tohno\\AppData\\Local\\Programs\\DSH NEXT\\resources\\app.asar',
+  asar: ENV_ASAR || '<install>\AppData\\Local\\Programs\\DSH NEXT\\resources\\app.asar',
   entry: 'lib/web-document.js',
   backupDir: BDIR,
   origFile: path.join(BDIR, 'web-document.orig.js'),

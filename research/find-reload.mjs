@@ -1,6 +1,6 @@
 import fs from 'node:fs';
 
-const file = 'D:\\Users\\tohno\\AppData\\Local\\Programs\\DSH NEXT\\resources\\app.asar';
+const file = '<install>\AppData\\Local\\Programs\\DSH NEXT\\resources\\app.asar';
 const buf = fs.readFileSync(file);
 for (const needle of ['role: "reload"', "role: 'reload'", '重新加载', 'Reload Window', 'reload-window']) {
   let at = buf.indexOf(Buffer.from(needle, 'utf8'));

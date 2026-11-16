@@ -6,4 +6,4 @@ def stat(p):
         st=ImageStat.Stat(im.crop(box)); out[lab]=([round(x,1) for x in st.mean],[round(x,1) for x in st.stddev])
     return out
 for n in ["preview-light.png","final-live.png"]:
-    print(n, stat(rf"D:\MyDocument\deepseek harness\kurisu-skin\preview\{n}"))
+    print(n, stat(rf"<workspace>\kurisu-skin\preview\{n}"))

@@ -1,10 +1,10 @@
 import fs from "node:fs";
-const p = "D:\\MyDocument\\deepseek harness\\kurisu-skin\\research\\asar-extract\\node_modules\\@deepseek-ai\\dsh-client-ui-slots\\lib\\index.js";
+const p = "<workspace>\\kurisu-skin\\research\\asar-extract\\node_modules\\@deepseek-ai\\dsh-client-ui-slots\\lib\\index.js";
 const src = fs.readFileSync(p, "utf8");
 const out = src + "\nglobalThis.__SlotCore = SlotCore;\n";
-const t = "D:\\MyDocument\\deepseek harness\\kurisu-skin\\research\\scratch\\slots.test.mjs";
+const t = "<workspace>\\kurisu-skin\\research\\scratch\\slots.test.mjs";
 fs.writeFileSync(t, out);
-await import("file:///D:/MyDocument/deepseek%20harness/kurisu-skin/research/scratch/slots.test.mjs");
+await import("file:///<workspace>/kurisu-skin/research/scratch/slots.test.mjs");
 const Core = globalThis.__SlotCore;
 console.log("SlotCore:", typeof Core);
 const core = new Core();

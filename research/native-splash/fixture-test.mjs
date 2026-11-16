@@ -5,7 +5,7 @@
 // payload's script sources and on a reconstructed ESM web-document.mjs.
 //
 // Run:
-//   C:\Users\tohno\.dsh\dsh-runtimes\dsh-next-primary-runtime\dependencies\node\bin\node.exe kurisu-skin\research\native-splash\fixture-test.mjs
+//   <home>\.dsh\dsh-runtimes\dsh-next-primary-runtime\dependencies\node\bin\node.exe kurisu-skin\research\native-splash\fixture-test.mjs
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';

@@ -86,7 +86,7 @@ $pkgText = Get-Content -LiteralPath (Join-Path $src 'package.json') -Raw -Encodi
 $lines += ('version       : ' + ($pkgText | ConvertFrom-Json).version)
 $lines += ''
 $lines += 'asar facts at backup time (read-only):'
-$asar = 'D:\Users\tohno\AppData\Local\Programs\DSH NEXT\resources\app.asar'
+$asar = '<install>\AppData\Local\Programs\DSH NEXT\resources\app.asar'
 if (Test-Path -LiteralPath $asar) {
     $lines += ('  app.asar bytes : ' + (Get-Item -LiteralPath $asar).Length)
     $lines += '  patch status   : run "research\native-splash\verify-applied-payload.mjs" after restore'

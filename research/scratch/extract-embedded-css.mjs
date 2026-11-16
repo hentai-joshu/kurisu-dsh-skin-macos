@@ -3,8 +3,8 @@
 // line-numbered .css files under research\embedded-css\ so selectors can be quoted.
 import fs from 'node:fs';
 import path from 'node:path';
-const src = 'D:\\MyDocument\\deepseek harness\\kurisu-skin\\research\\asar-extract\\node_modules\\@deepseek-ai';
-const out = 'D:\\MyDocument\\deepseek harness\\kurisu-skin\\research\\embedded-css';
+const src = '<workspace>\\kurisu-skin\\research\\asar-extract\\node_modules\\@deepseek-ai';
+const out = '<workspace>\\kurisu-skin\\research\\embedded-css';
 fs.mkdirSync(out, { recursive: true });
 
 function walk(d, cb) {

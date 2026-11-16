@@ -1,7 +1,7 @@
 // Removes the temporary DOM-diagnostic block and installs the final polish.
 import fs from 'node:fs';
 
-const f = 'D:\\MyDocument\\deepseek harness\\kurisu-skin\\src\\client.template.js';
+const f = '<workspace>\\kurisu-skin\\src\\client.template.js';
 let t = fs.readFileSync(f, 'utf8');
 
 // 1) drop the reporter calls inside apply

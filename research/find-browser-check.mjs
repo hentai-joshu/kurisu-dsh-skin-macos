@@ -1,6 +1,6 @@
 import fs from 'node:fs';
 
-const file = 'D:\\Users\\tohno\\AppData\\Local\\Programs\\DSH NEXT\\resources\\app.asar';
+const file = '<install>\AppData\\Local\\Programs\\DSH NEXT\\resources\\app.asar';
 const buf = fs.readFileSync(file);
 const needles = ['Browser access is disabled', 'browserAccess', 'browser-access'];
 for (const needle of needles) {

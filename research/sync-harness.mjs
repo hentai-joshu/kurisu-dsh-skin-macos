@@ -1,5 +1,5 @@
 import fs from 'node:fs';
-const f = 'D:\\MyDocument\\deepseek harness\\kurisu-skin\\preview\\make-dom-harness.mjs';
+const f = '<workspace>\\kurisu-skin\\preview\\make-dom-harness.mjs';
 let t = fs.readFileSync(f, 'utf8');
 const pairs = [
   ["bgBase: 'rgba(7,10,18,0.52)', layer1: 'rgba(14,19,30,0.76)', layer2: 'rgba(19,25,38,0.84)'",

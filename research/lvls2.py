@@ -1,5 +1,5 @@
 from PIL import Image, ImageStat
-base=r"D:\MyDocument\deepseek harness\kurisu-skin\preview"
+base=r"<workspace>\kurisu-skin\preview"
 for sch in ["dark","light"]:
     print("==",sch)
     for g in ["solid","mid","clear"]:

@@ -3,7 +3,7 @@
 // wider socket, depth-scaled cathodes, per-tube flicker phase).
 import fs from 'node:fs';
 
-const f = 'D:\\MyDocument\\deepseek harness\\kurisu-skin\\src\\client.template.js';
+const f = '<workspace>\\kurisu-skin\\src\\client.template.js';
 let t = fs.readFileSync(f, 'utf8');
 
 const START = '/* ===== nixie tubes ======================================================= */';

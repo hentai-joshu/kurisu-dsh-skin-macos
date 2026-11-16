@@ -1,7 +1,7 @@
 from PIL import Image, ImageDraw
 import os
 
-base = r"D:\MyDocument\deepseek harness\kurisu-skin\preview"
+base = r"<workspace>\kurisu-skin\preview"
 levels = ["solid", "mid", "clear"]
 labels = {"solid": "偏实 (solid)", "mid": "标准 (mid, 默认)", "clear": "通透 (clear)"}
 

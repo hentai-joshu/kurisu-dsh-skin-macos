@@ -3,7 +3,7 @@
 > 面向：在一台装好 DSH Desktop NEXT 的 Windows 机器上，从 [BACKUP.md](<BACKUP.md>) 的备份
 > 完整复原「牧濑红莉栖皮肤」——包括 profile 插件包（配色 / 壁纸 / 辉光管 / 设置行）
 > 与 `app.asar`（t=0 起的 5 拍辉光管启动序列）。
-> 全部命令从工作区根 `D:\MyDocument\deepseek harness` 执行。
+> 全部命令从工作区根 `<workspace>` 执行。
 
 ---
 
@@ -12,11 +12,11 @@
 | 项 | 期望值 / 检查方法 |
 | --- | --- |
 | 宿主版本 | DSH Desktop NEXT `0.2.1-rc.2` / app `2.0.19-next`。版本不同需要重新核对 `research/ui-theme-contract.md` 的类名与 token 表 |
-| app.asar 路径 | `D:\Users\tohno\AppData\Local\Programs\DSH NEXT\resources\app.asar`（可用环境变量/实际安装路径替换；补丁脚本会自己读 `backup-manifest.json` 里的路径） |
-| Node | `C:\Users\tohno\.dsh\dsh-runtimes\dsh-next-primary-runtime\dependencies\node\bin\node.exe`（**不在 PATH**，必须显式用） |
+| app.asar 路径 | `<install>\AppData\Local\Programs\DSH NEXT\resources\app.asar`（可用环境变量/实际安装路径替换；补丁脚本会自己读 `backup-manifest.json` 里的路径） |
+| Node | `<home>\.dsh\dsh-runtimes\dsh-next-primary-runtime\dependencies\node\bin\node.exe`（**不在 PATH**，必须显式用） |
 | 电子 fuse | `EnableEmbeddedAsarIntegrityValidation: disabled`、`OnlyLoadAppFromAsar: disabled`（`research/ui-theme-contract.md` §?、README §105-113 记录；不禁用完整性校验则改动 asar 会被拒） |
-| 工作区 | `D:\MyDocument\deepseek harness`，包目录 `kurisu-skin/` |
-| profile | 默认 `C:\Users\tohno\.dsh\profiles\desktop`（`install.ps1 -ProfileDir` 可改） |
+| 工作区 | `<workspace>`，包目录 `kurisu-skin/` |
+| profile | 默认 `<home>\.dsh\profiles\desktop`（`install.ps1 -ProfileDir` 可改） |
 | 备份 | 动手前先读 [BACKUP.md](<BACKUP.md>)，确认 `research/native-splash/` 三份原始备份齐全 |
 
 > ⚠️ **改 asar 前先完全退出 DSH Desktop**：文件被占用时写入会失败或损坏归档。
@@ -30,7 +30,7 @@
 客户端（主题 token 覆盖 / 壁纸 / 槽位 / 设置行 / 世界线计）。
 
 ```powershell
-cd "D:\MyDocument\deepseek harness\kurisu-skin"
+cd "<workspace>\kurisu-skin"
 
 # A1. 重新构建（把 assets/*.webp、字体、sg-nixie 组件内联进 lib/client.js 与 lib/index.js）
 powershell -NoProfile -ExecutionPolicy Bypass -File .\build.ps1
@@ -62,8 +62,8 @@ powershell -NoProfile -ExecutionPolicy Bypass -File .\install.ps1
 `jsonSize`，其余 20,285 个 entry 一字节不动，不重打包 180 MB。
 
 ```powershell
-$node = 'C:\Users\tohno\.dsh\dsh-runtimes\dsh-next-primary-runtime\dependencies\node\bin\node.exe'
-cd "D:\MyDocument\deepseek harness"
+$node = '<home>\.dsh\dsh-runtimes\dsh-next-primary-runtime\dependencies\node\bin\node.exe'
+cd "<workspace>"
 
 # B1. 合成归档上的端到端自检（39 项，绝不动真 asar）
 & $node 'kurisu-skin\research\native-splash\fixture-test.mjs'
@@ -129,8 +129,8 @@ entry `175621688 / 1110975`、`LOADING_STYLE 1,100,333 B`。
 ## E. 回滚顺序
 
 ```powershell
-$node = 'C:\Users\tohno\.dsh\dsh-runtimes\dsh-next-primary-runtime\dependencies\node\bin\node.exe'
-cd "D:\MyDocument\deepseek harness"
+$node = '<home>\.dsh\dsh-runtimes\dsh-next-primary-runtime\dependencies\node\bin\node.exe'
+cd "<workspace>"
 
 # E1. 先还原 asar（完全退出 DSH 后执行）
 & $node 'kurisu-skin\research\patch-asar-splash.mjs' --restore

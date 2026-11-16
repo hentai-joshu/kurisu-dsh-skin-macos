@@ -11,7 +11,7 @@ def stats(p, box, label):
     L1,L2=lin(p95),lin(p5)
     cr=(L1+0.05)/(L2+0.05)
     print(f"{label}: p5={p5:.0f} p50={p50:.0f} p95={p95:.0f} contrast(p95/p5)={cr:.1f}")
-base=r"D:\MyDocument\deepseek harness\kurisu-skin\preview"
+base=r"<workspace>\kurisu-skin\preview"
 for n in ["final-live.png","glass-live.png"]:
     p=base+"\\"+n
     print("==",n)

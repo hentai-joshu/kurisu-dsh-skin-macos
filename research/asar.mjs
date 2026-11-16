@@ -3,7 +3,7 @@
 // Read-only: never writes to the archive.
 import fs from 'node:fs';
 
-const ASAR = 'D:\\Users\\tohno\\AppData\\Local\\Programs\\DSH NEXT\\resources\\app.asar';
+const ASAR = '<install>\AppData\\Local\\Programs\\DSH NEXT\\resources\\app.asar';
 
 function open() {
   const fd = fs.openSync(ASAR, 'r');

@@ -1,13 +1,13 @@
 # UI theme contract — DSH Desktop NEXT (`dsh-desktop-next 2.0.19-next`)
 
 Investigation date: 2026-11-07. Read-only; all scratch/extract files are under
-`D:\MyDocument\deepseek harness\kurisu-skin\research\`. Everything below is
+`<workspace>\kurisu-skin\research\`. Everything below is
 **observed in shipped source** unless explicitly marked `[inference]`.
 
 Source archive:
-`D:\Users\tohno\AppData\Local\Programs\DSH NEXT\resources\app.asar`
+`<install>\AppData\Local\Programs\DSH NEXT\resources\app.asar`
 (180,923,876 bytes). Extracted copies live in
-`D:\MyDocument\deepseek harness\kurisu-skin\research\asar-extract\`; the same path
+`<workspace>\kurisu-skin\research\asar-extract\`; the same path
 prefix is abbreviated below as **`$X`**. Inside paths written as
 `app.asar!/path` mean "the file inside the asar".
 
@@ -24,7 +24,7 @@ four little-endian `uint32`s:
 ```
 
 Working reader (Node `fs` + `Buffer` only):
-`D:\MyDocument\deepseek harness\kurisu-skin\research\scratch\asar.js`
+`<workspace>\kurisu-skin\research\scratch\asar.js`
 
 ```js
 const head = Buffer.alloc(16); fs.readSync(fd, head, 0, 16, 0);
@@ -512,7 +512,7 @@ const disposeRegistration = ctx.slots.register({
 ```
 
 `shell.overlay` is a **`list`** slot. A real installed plugin registers into it
-(`C:\Users\tohno\.dsh\profiles\desktop\node_modules\dsh-workspace-scope\lib\client.js`,
+(`<home>\.dsh\profiles\desktop\node_modules\dsh-workspace-scope\lib\client.js`,
 tail):
 
 ```js
@@ -632,13 +632,13 @@ function removeOwnedStyles(id) {
 ```
 
 And an `- insert:` row in the **profile** patch layer
-`C:\Users\tohno\.dsh\profiles\desktop\cordis.patch.yml` (see §3.4).
+`<home>\.dsh\profiles\desktop\cordis.patch.yml` (see §3.4).
 
 ### 3.2 `package.json` — exact fields
 
 Modeled on the two live examples
 `app.asar!/node_modules/dshmarket/package.json:23–49` and
-`C:\Users\tohno\.dsh\profiles\desktop\node_modules\dsh-workspace-scope\package.json:28–59`:
+`<home>\.dsh\profiles\desktop\node_modules\dsh-workspace-scope\package.json:28–59`:
 
 ```json
 {
@@ -757,7 +757,7 @@ bundles end with `exports.apply = apply; exports.inject = inject; …; return mo
 Verbatim head of every shipped bundle, e.g.
 `app.asar!/node_modules/@deepseek-ai/dsh-client-ui-layout/lib/client.js:1–6`
 and the tail at 713–718; also
-`C:\Users\tohno\.dsh\profiles\desktop\node_modules\dsh-workspace-scope\lib\client.js`:
+`<home>\.dsh\profiles\desktop\node_modules\dsh-workspace-scope\lib\client.js`:
 
 ```js
 window.__ModuleLoader__.load({
@@ -1070,7 +1070,7 @@ full union with light/dark values: `$X\tokens.json`.)
 
 ## Appendix B — scratch files written
 
-Under `D:\MyDocument\deepseek harness\kurisu-skin\research\`:
+Under `<workspace>\kurisu-skin\research\`:
 
 * `ui-theme-contract.md` — this report (the only deliverable).
 * `scratch\asar.js`, `asar-ls.js`, `asar-grep.js`, `extract-tokens.js`,

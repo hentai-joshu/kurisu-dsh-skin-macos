@@ -4,9 +4,9 @@
 import fs from 'node:fs';
 import path from 'node:path';
 
-const asar = 'D:\\Users\\tohno\\AppData\\Local\\Programs\\DSH NEXT\\resources\\app.asar';
+const asar = '<install>\AppData\\Local\\Programs\\DSH NEXT\\resources\\app.asar';
 const unpackedRoot = asar + '.unpacked';
-const out = 'D:\\MyDocument\\deepseek harness\\kurisu-skin\\research\\asar-extract';
+const out = '<workspace>\\kurisu-skin\\research\\asar-extract';
 const doExtract = process.argv.includes('--extract');
 
 const buf = fs.readFileSync(asar);
