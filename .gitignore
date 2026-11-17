@@ -1,0 +1,15 @@
+# 构建产物：node build.mjs 生成，不进版本库
+lib/
+build-info.json
+
+# 上游作者的调试与探针资料（含其本机 Windows 路径），公开发布时不带
+research/
+preview/
+*.ps1
+APPLY.md
+BACKUP.md
+MANIFEST.txt
+
+# 系统 / 编辑器
+.DS_Store
+node_modules/

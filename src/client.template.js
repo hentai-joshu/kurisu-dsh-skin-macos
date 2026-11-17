@@ -12,36 +12,45 @@ window.__ModuleLoader__.load({
 		const STORAGE_KEY = "dsh-skin-kurisu:wallpaper";
 		const POLISH_KEY = "dsh-skin-kurisu:polish";
 		const GLASS_KEY = "dsh-skin-kurisu:glass";
+		const DENSITY_KEY = "{{SECRET_hjp4bq2n}}density";
+		// One image per wallpaper, shared by the dark and light variants. Naming
+		// each data URI once (instead of writing it into both `dark` and `light`)
+		// keeps the built bundle about half a megabyte smaller — the same base64
+		// was being inlined twice per wallpaper.
+		const ART_NIGHT = "{{WALL_NIGHT}}";
+		const ART_DAY = "{{WALL_DAY}}";
+		const ART_DUSK = "{{WALL_DUSK}}";
+		const ART_LIBRARY = "{{WALL_LIBRARY}}";
 		const WALLPAPERS = {
 			night: {
 				label: "夜行列车",
 				hint: "深夜巴士 · 雨与霓虹",
-				dark: "{{WALL_NIGHT}}",
-				light: "{{WALL_DAY}}",
+				dark: ART_NIGHT,
+				light: ART_NIGHT,
 				thumb: "{{THUMB_NIGHT}}",
 				pos: "76% 42%"
 			},
 			day: {
 				label: "白昼窗边",
 				hint: "Dr Pepper · 午后阳光",
-				dark: "{{WALL_DAY}}",
-				light: "{{WALL_DAY}}",
+				dark: ART_DAY,
+				light: ART_DAY,
 				thumb: "{{THUMB_DAY}}",
 				pos: "72% 38%"
 			},
 			dusk: {
 				label: "薄暮荒原",
 				hint: "灰色天光 · 雨后街道",
-				dark: "{{WALL_DUSK}}",
-				light: "{{WALL_DUSK}}",
+				dark: ART_DUSK,
+				light: ART_DUSK,
 				thumb: "{{THUMB_DUSK}}",
 				pos: "70% 44%"
 			},
 			library: {
 				label: "星夜图书馆",
 				hint: "暖光书架 · 助手与真由理",
-				dark: "{{WALL_LIBRARY}}",
-				light: "{{WALL_LIBRARY}}",
+				dark: ART_LIBRARY,
+				light: ART_LIBRARY,
 				thumb: "{{THUMB_LIBRARY}}",
 				pos: "62% 42%"
 			}
@@ -51,7 +60,7 @@ window.__ModuleLoader__.load({
 
 		// ---------------------------------------------------------------- palette
 		// Amadeus / Kurisu: deep night blue, warm lab-coat white, tie crimson,
-		// CRT teal as the secondary "business" accent.
+		// Kurisu crimson as the secondary "business" accent (no CRT teal left).
 		const TOKENS = {
 			"--dsw-alias-bg-base": { light: "rgba(250,246,241,0.40)", dark: "rgba(7,10,18,0.46)" },
 			"--dsw-alias-bg-layer-1": { light: "rgba(255,252,248,0.56)", dark: "rgba(14,19,30,0.50)" },
@@ -137,13 +146,13 @@ window.__ModuleLoader__.load({
 			"--dsw-alias-button-ghost-active-border": { light: "rgba(156,49,64,0.45)", dark: "rgba(224,145,156,0.45)" },
 			"--dsw-alias-button-ghost-active-fill": { light: "rgba(156,49,64,0.10)", dark: "rgba(224,145,156,0.12)" },
 			"--dsw-alias-button-ghost-active-hover": { light: "rgba(156,49,64,0.16)", dark: "rgba(224,145,156,0.18)" },
-			"--dsw-alias-button-info-fill": { light: "#2f8f7c", dark: "#5fb7a6" },
-			"--dsw-alias-button-info-hover": { light: "#37a48f", dark: "#75c9b8" },
+			"--dsw-alias-button-info-fill": { light: "#9c3140", dark: "#b03a49" },
+			"--dsw-alias-button-info-hover": { light: "#b03a49", dark: "#c2505f" },
 			"--dsw-alias-button-tool-bar-fill": { light: "rgba(94,54,58,0.40)", dark: "rgba(20,26,40,0.55)" },
 			"--dsw-alias-button-tool-bar-hover": { light: "rgba(94,54,58,0.55)", dark: "rgba(26,33,50,0.72)" },
 			"--dsw-alias-button-tool-bar-fill-invisible": { light: "rgba(94,54,58,0.25)", dark: "rgba(14,19,30,0.35)" },
-			"--dsw-alias-state-business-primary": { light: "#2f8f7c", dark: "#6fc7b5" },
-			"--dsw-alias-state-business-tertiary": { light: "rgba(47,143,124,0.14)", dark: "rgba(111,199,181,0.16)" },
+			"--dsw-alias-state-business-primary": { light: "#9c3140", dark: "#e0919c" },
+			"--dsw-alias-state-business-tertiary": { light: "rgba(156,49,64,0.14)", dark: "rgba(224,145,156,0.16)" },
 			"--dsw-alias-state-error-primary": { light: "#c62f3c", dark: "#f27a86" },
 			"--dsw-alias-state-error-secondary": { light: "#d95a65", dark: "#f6a0a8" },
 			"--dsw-alias-state-success-primary": { light: "#2f9e6f", dark: "#5cc9a7" },
@@ -286,33 +295,22 @@ html[data-ks-wall="on"] ::selection {
    the wallpaper detail out of focus behind them, so contrast survives without
    adding more fill. Only active while a wallpaper is on — with no wallpaper
    there is nothing to blur and this would just cost compositing. */
-html[data-ks-wall="on"] div.MnhYfG_sidebarCol,
-html[data-ks-wall="on"] #root > div > div.MnhYfG_sidebarCol {
+html[data-ks-wall="on"] div[class*="_sidebarCol"],
+html[data-ks-wall="on"] #root > div > div[class*="_sidebarCol"] {
   -webkit-backdrop-filter: blur(26px) saturate(118%);
   backdrop-filter: blur(26px) saturate(118%);
 }
-html[data-ks-wall="on"] div.VERcba_card {
+html[data-ks-wall="on"] div[data-composer-card] {
   -webkit-backdrop-filter: blur(20px) saturate(115%);
   backdrop-filter: blur(20px) saturate(115%);
 }
-/* markdown code block shell (the shipped rule paints
-   --dsw-alias-markdown-code-block on the pre/container) */
-html[data-ks-wall="on"] div.MnhYfG_frame pre,
-html[data-ks-wall="on"] div.MnhYfG_frame div[class*="codeBlock"],
-html[data-ks-wall="on"] div.MnhYfG_frame div[class*="markdownCode"] {
-  -webkit-backdrop-filter: blur(14px) saturate(112%);
-  backdrop-filter: blur(14px) saturate(112%);
-}
-/* user message bubbles (the assistant side has no bubble wrapper) */
-html[data-ks-wall="on"] div.MnhYfG_frame div[class*="bubble"] {
-  -webkit-backdrop-filter: blur(12px) saturate(112%);
-  backdrop-filter: blur(12px) saturate(112%);
-}
+/* Code blocks and message bubbles deliberately get no backdrop-filter: their
+   count grows with the conversation, each one forces its own compositing layer,
+   and blurring a surface that already paints an opaque-enough token buys very
+   little. Only the two long-lived chrome surfaces (sidebar, composer) blur. */
 @media (prefers-reduced-transparency: reduce) {
-  html[data-ks-wall="on"] div.MnhYfG_sidebarCol,
-  html[data-ks-wall="on"] div.VERcba_card,
-  html[data-ks-wall="on"] div.MnhYfG_frame pre,
-  html[data-ks-wall="on"] div.MnhYfG_frame div[class*="bubble"] {
+  html[data-ks-wall="on"] div[class*="_sidebarCol"],
+  html[data-ks-wall="on"] div[data-composer-card] {
     -webkit-backdrop-filter: none;
     backdrop-filter: none;
   }
@@ -332,8 +330,6 @@ html[data-ks-glass="solid"] body {
   --dsw-alias-markdown-code-block: rgba(246,240,234,.92) !important;
   --dsw-alias-markdown-code-block-banner: rgba(240,232,226,.95) !important;
   --dsw-specific-bubble: rgba(255,238,236,.88) !important;
-  --ks-scrim-light: rgba(250,246,241,.42) !important;
-  --ks-scrim: rgba(7,10,18,.56) !important;
 }
 html[data-ks-glass="solid"] body[data-ds-dark-theme] {
   --dsw-specific-sidebar-fill: rgba(8,11,19,.86) !important;
@@ -352,8 +348,6 @@ html[data-ks-glass="clear"] body {
   --dsw-alias-markdown-code-block: rgba(246,240,234,.32) !important;
   --dsw-alias-markdown-code-block-banner: rgba(240,232,226,.40) !important;
   --dsw-specific-bubble: rgba(255,238,236,.40) !important;
-  --ks-scrim-light: rgba(250,246,241,.08) !important;
-  --ks-scrim: rgba(7,10,18,.22) !important;
 }
 html[data-ks-glass="clear"] body[data-ds-dark-theme] {
   --dsw-specific-sidebar-fill: rgba(8,11,19,.26) !important;
@@ -364,6 +358,55 @@ html[data-ks-glass="clear"] body[data-ds-dark-theme] {
   --dsw-alias-markdown-code-block-banner: rgba(14,19,30,.36) !important;
   --dsw-specific-bubble: rgba(44,36,50,.34) !important;
 }
+
+/* -- wallpaper density ---------------------------------------------------- */
+/* One knob for "how strongly the wallpaper shows", because that is the only
+   question the user actually has: the four panel surfaces already have their
+   own glass level, and a separate wash on the conversation column just fought
+   with it. --ks-veil / --ks-veil-light is one flat layer stacked above the
+   image and above every gradient that shapes it: raising its alpha fades the
+   whole picture out without touching the hand-tuned gradient work. The
+   conversation column's own wash (--ks-wash / --ks-wash-light) rides the same
+   ladder, so the slab of cream that sits behind the text and around the input
+   card lightens and darkens with the wallpaper instead of staying fixed. The
+   two are separate properties only because the column needs a little more
+   opacity at the light end to keep body text legible. "vivid" is nearly
+   transparent, i.e. close to the artwork as tuned; every other step only ever
+   makes the picture fainter. All of these are plain custom properties, so a
+   step change repaints without rebuilding the sheet. */
+html[data-ks-density="faint"] body {
+  --ks-veil: rgba(6,8,15,.58);
+  --ks-veil-light: rgba(252,249,245,.55);
+  --ks-wash: rgba(7,10,18,.58);
+  --ks-wash-light: rgba(250,246,241,.55);
+}
+html[data-ks-density="soft"] body {
+  --ks-veil: rgba(6,8,15,.42);
+  --ks-veil-light: rgba(252,249,245,.40);
+  --ks-wash: rgba(7,10,18,.42);
+  --ks-wash-light: rgba(250,246,241,.40);
+}
+html[data-ks-density="mid"] body {
+  --ks-veil: rgba(6,8,15,.26);
+  --ks-veil-light: rgba(252,249,245,.25);
+  --ks-wash: rgba(7,10,18,.30);
+  --ks-wash-light: rgba(250,246,241,.28);
+}
+html[data-ks-density="strong"] body {
+  --ks-veil: rgba(6,8,15,.12);
+  --ks-veil-light: rgba(252,249,245,.12);
+  --ks-wash: rgba(7,10,18,.14);
+  --ks-wash-light: rgba(250,246,241,.12);
+}
+html[data-ks-density="vivid"] body {
+  --ks-veil: rgba(6,8,15,0);
+  --ks-veil-light: rgba(252,249,245,0);
+  --ks-wash: rgba(7,10,18,.06);
+  --ks-wash-light: rgba(250,246,241,.05);
+}
+
+
+
 
 .ks-seg { display: inline-flex; align-items: center; gap: 2px; padding: 2px; border-radius: 8px;
   background: color-mix(in srgb, var(--dsw-alias-label-primary) 8%, transparent); }
@@ -378,83 +421,16 @@ html[data-ks-glass="clear"] body[data-ds-dark-theme] {
   font-weight: 600;
 }
 .ks-seg > button:hover { color: var(--dsw-alias-label-primary); }
+.ks-seg > button:focus-visible {
+  outline: 2px solid var(--dsw-alias-brand-primary); outline-offset: 1px;
+}
 
 /* ===== nixie tubes (v4) ================================================== */
 /* Tube rendering is the v4 Web Component from steins-gate-nixie-assets
-   (src/sg-nixie.inline.js): five stacked layers, single-stroke SVG cathode
-   glyphs, front/back occlusion, current hum and physical ignition timing, all
-   inside its own Shadow DOM. This block only sizes and frames it through the
-   component's public CSS custom properties and its exposed ::part(panel). */
-
-.ks-nixie-row {
-  position: relative;
-  display: inline-flex;
-  align-items: flex-end;
-  gap: 1px;
-  padding: 4px 6px 3px;
-  border-radius: 5px;
-  background: linear-gradient(180deg, #2a323d 0%, #1c222b 55%, #12161c 100%);
-  box-shadow:
-    inset 0 1px 0 rgba(255,255,255,.10),
-    inset 0 -2px 5px rgba(0,0,0,.62),
-    0 6px 16px -8px rgba(0,0,0,.85),
-    0 0 22px -10px rgba(255,122,0,.55);
-  cursor: pointer;
-  font: inherit;
-  border: 1px solid rgba(255,255,255,.06);
-  animation: ks-meter-glow 3.4s ease-in-out infinite;
-}
-.ks-nixie-row::before,
-.ks-nixie-row::after {
-  content: "";
-  position: absolute;
-  top: 3px;
-  width: 3px;
-  height: 3px;
-  border-radius: 50%;
-  background: radial-gradient(circle at 35% 30%, #4a545f, #14181d 70%);
-  box-shadow: inset 0 -1px 1px rgba(0,0,0,.8);
-  pointer-events: none;
-}
-.ks-nixie-row::before { left: 3px; }
-.ks-nixie-row::after { right: 3px; }
-.ks-nixie-row:hover { border-color: rgba(255,160,40,.45); }
-.ks-nixie-row:focus-visible { outline: 2px solid var(--ds-focus-ring-color, #e0919c); outline-offset: 2px; }
-@keyframes ks-meter-glow {
-  0%, 100% { box-shadow: inset 0 1px 0 rgba(255,255,255,.10), inset 0 -2px 5px rgba(0,0,0,.62), 0 6px 16px -8px rgba(0,0,0,.85), 0 0 22px -10px rgba(255,122,0,.45); }
-  50%      { box-shadow: inset 0 1px 0 rgba(255,255,255,.10), inset 0 -2px 5px rgba(0,0,0,.62), 0 6px 16px -8px rgba(0,0,0,.85), 0 0 26px -8px rgba(255,122,0,.75); }
-}
-
-/* Compact sidebar meter: 8 tubes (1 + dot + 6 decimals) packed into the footer
-   slot. The component's own panel is a full lab instrument, so strip its
-   padding, rivets and plate. */
-.ks-nixie-row sg-nixie { --nx-span: 150px; --nx-gr: .13; }
-.ks-nixie-row sg-nixie::part(panel) {
-  padding: 0;
-  border-radius: 0;
-  background: transparent;
-  box-shadow: none;
-  cursor: pointer;
-}
-.ks-nixie-row sg-nixie::part(panel)::before,
-.ks-nixie-row sg-nixie::part(panel)::after { display: none; }
-
-/* Boot hand-off: the reading that converged on the full-screen splash "lands"
-   in the sidebar. Same 8 tubes, same 1.130205, one amber ignition pulse. The
-   class is added by armSplashHandoff() when the overlay starts dissolving and
-   removed 1.5s later so the ambient ks-meter-glow resumes. */
-.ks-nixie-row.ks-meter-arrive { animation: ks-meter-arrive 1.4s cubic-bezier(.2,.7,.2,1) both; }
-@keyframes ks-meter-arrive {
-  0%   { filter: brightness(.32) saturate(.45); transform: translateY(-5px) scale(.985);
-         box-shadow: 0 0 0 0 rgba(255,122,0,0); }
-  36%  { filter: brightness(1.85) saturate(1.3); transform: none;
-         box-shadow: 0 0 26px 2px rgba(255,150,60,.55), 0 0 72px 10px rgba(255,104,20,.28); }
-  100% { filter: none; transform: none;
-         box-shadow: inset 0 1px 0 rgba(255,255,255,.10), inset 0 -2px 5px rgba(0,0,0,.62),
-                     0 6px 16px -8px rgba(0,0,0,.85), 0 0 22px -10px rgba(255,122,0,.45); }
-}
-
-/* Full-size boards: boot screen, splash takeover, host load screen. */
+   (src/sg-nixie.inline.js). build.mjs slices this section out by these two
+   markers so the host-side boot injection can ship the identical stylesheet;
+   the compact sidebar meter that used to live here is gone, so what remains is
+   only the full-size board sizing used by the splash / boot / load screens. */
 .ks-splash-row sg-nixie,
 .ks-boot-board sg-nixie,
 #ks-loadscreen .ks-load-row sg-nixie { --nx-span: min(560px, 78vw); --nx-gr: .12; }
@@ -645,14 +621,27 @@ html[data-ks-glass="clear"] body[data-ds-dark-theme] {
    of the band puts it in the corner and lets the logo row sit at the normal
    left inset again. */
 /* The collapse toggle must share the first window row with 应用 / 编辑.
-   It cannot be moved with CSS: MnhYfG_sidebarCol carries backdrop-filter, which
+   It cannot be moved with CSS: the sidebar column carries backdrop-filter, which
    makes it the containing block for position:fixed (measured from y=40), and
    both it and logoRow clip with overflow:hidden. So the real button stays in
    React's tree (hidden), and a mirror is mounted on document.body where fixed
    resolves against the viewport. */
-[data-ks-wall="on"] [class*="_toggle"].ks-toggle-source {
+/* macOS keeps the stock position: the toggle already sits at the top-right of
+   the sidebar's own strip, and the traffic lights own the top-left corner. Only
+   the Windows build needs the mirror, because there the button is fixed to a
+   title bar that is taller than one row. */
+html:not([data-platform="darwin"])[data-ks-wall="on"] [class*="_toggle"].ks-toggle-source {
   visibility: hidden !important;
 }
+html[data-platform="darwin"] .ks-toggle-mirror { display: none !important; }
+
+/* Traffic lights are drawn at x16..76, y6..30 by the window, above the page.
+   The 40px rail starts at the window's top edge, so without this clearance the
+   Amadeus mark lands straight on top of them. */
+html[data-platform="darwin"] div[class*="_sidebarCol"] div[class*="_root"][class*="_collapsed"] {
+  padding-top: 46px !important;
+}
+
 .ks-toggle-mirror {
   position: fixed !important;
   top: 6px !important;
@@ -762,14 +751,14 @@ html[data-ks-wall="on"] body {
 div[class*="_brandMark"] {
   flex: none;
 }
-div[class*="_brandMark"] > svg.ks-mark {
+div[class*="_brandMark"] > .ks-mark {
   width: 20px;
   height: 20px;
   max-width: 20px;
   max-height: 20px;
 }
 /* the rail (collapsed) variant is a 40px square; keep the badge centred there */
-html[data-sidebar-collapsed="true"] div[class*="_brandMark"] > svg.ks-mark {
+html[data-sidebar-collapsed="true"] div[class*="_brandMark"] > .ks-mark {
   width: 22px;
   height: 22px;
   max-width: 22px;
@@ -790,13 +779,12 @@ html[data-sidebar-collapsed="true"] div[class*="_brandMark"] > svg.ks-mark {
    writes the --dsw-* tokens inline on document.body, and a custom property
    resolves var() on the element it is DECLARED on. Declaring this block on html
    made every var(--dsw-*) lookup miss (they live one level down on body), so
-   --ks-teal / --ks-glow computed to the guaranteed-invalid value and every rule
+   --ks-glow computed to the guaranteed-invalid value and every rule
    using them silently produced nothing — the meter LED stayed transparent and
    the glow shadows never rendered. Fallbacks keep it usable even before the
    theme layer lands. */
 body {
   --ks-rose: color-mix(in srgb, var(--dsw-alias-brand-primary, #9c3140) 88%, white);
-  --ks-teal: var(--dsw-alias-state-business-primary, #2f8f7c);
   --ks-glow: color-mix(in srgb, var(--dsw-alias-brand-primary, #9c3140) 42%, transparent);
   --ks-glow-soft: color-mix(in srgb, var(--dsw-alias-brand-primary, #9c3140) 18%, transparent);
   --ks-ease: var(--ds-ease-in-out, cubic-bezier(.4,0,.2,1));
@@ -814,24 +802,24 @@ body {
    handle is the parent control + "> svg".
    Scope is limited to the app frame's interactive chrome so SVGs inside chat
    content are never touched. */
-html[data-ks-polish="on"] div.MnhYfG_frame :where(button, [role="button"], a, [tabindex]) > svg,
-html[data-ks-polish="on"] div.MnhYfG_frame span[class*="iconButton"] > svg,
-html[data-ks-polish="on"] div.MnhYfG_frame span[class*="panelIcon"] > svg {
+html[data-ks-polish="on"] div[class*="_frame"]:has(> div[class*="_sidebarCol"]) :where(button, [role="button"], a, [tabindex]) > svg,
+html[data-ks-polish="on"] div[class*="_frame"]:has(> div[class*="_sidebarCol"]) span[class*="iconButton"] > svg,
+html[data-ks-polish="on"] div[class*="_frame"]:has(> div[class*="_sidebarCol"]) span[class*="panelIcon"] > svg {
   transition: filter var(--ks-med) var(--ks-ease), transform var(--ks-med) var(--ks-ease);
 }
-html[data-ks-polish="on"] div.MnhYfG_frame :where(button, [role="button"], a):hover > svg,
-html[data-ks-polish="on"] div.MnhYfG_frame :where(button, [role="button"], a):focus-visible > svg {
+html[data-ks-polish="on"] div[class*="_frame"]:has(> div[class*="_sidebarCol"]) :where(button, [role="button"], a):hover > svg,
+html[data-ks-polish="on"] div[class*="_frame"]:has(> div[class*="_sidebarCol"]) :where(button, [role="button"], a):focus-visible > svg {
   filter: drop-shadow(0 0 5px var(--ks-glow));
   transform: scale(1.07);
 }
 /* icons in selected / active rows get a rose wash */
-html[data-ks-polish="on"] div.MnhYfG_frame :where([data-active="true"], [aria-current="page"], [aria-selected="true"], [data-selected="true"]) > svg {
+html[data-ks-polish="on"] div[class*="_frame"]:has(> div[class*="_sidebarCol"]) :where([data-active="true"], [aria-current="page"], [aria-selected="true"], [data-selected="true"]) > svg {
   color: var(--ks-rose);
   filter: drop-shadow(0 0 4px var(--ks-glow-soft));
 }
 
 /* -- buttons -------------------------------------------------------------- */
-html[data-ks-polish="on"] div.MnhYfG_frame :where(button, [role="button"]) {
+html[data-ks-polish="on"] div[class*="_frame"]:has(> div[class*="_sidebarCol"]) :where(button, [role="button"]) {
   transition:
     transform var(--ks-fast) var(--ks-ease),
     box-shadow var(--ks-med) var(--ks-ease),
@@ -839,18 +827,20 @@ html[data-ks-polish="on"] div.MnhYfG_frame :where(button, [role="button"]) {
     background-color var(--ks-med) var(--ks-ease),
     color var(--ks-med) var(--ks-ease);
 }
-html[data-ks-polish="on"] div.MnhYfG_frame :where(button, [role="button"]):hover:not(:disabled):not([aria-disabled="true"]) {
+html[data-ks-polish="on"] div[class*="_frame"]:has(> div[class*="_sidebarCol"]) :where(button, [role="button"]):hover:not(:disabled):not([aria-disabled="true"]) {
   box-shadow: 0 0 0 1px var(--ks-glow-soft), 0 4px 14px -6px var(--ks-glow);
 }
-html[data-ks-polish="on"] div.MnhYfG_frame :where(button, [role="button"]):active:not(:disabled):not([aria-disabled="true"]) {
+html[data-ks-polish="on"] div[class*="_frame"]:has(> div[class*="_sidebarCol"]) :where(button, [role="button"]):active:not(:disabled):not([aria-disabled="true"]) {
   transform: scale(.965);
 }
 
 /* primary / CTA surfaces: a restrained rose→plum gradient + breathing ring.
-   Verified shipped selector: button.VERcba_primary (34x34 round send/stop,
-   background: var(--dsw-alias-button-info-fill)) — the info fill is what the
-   stock UI paints the send key with, so this is where the Kurisu red lives. */
-html[data-ks-polish="on"] button.VERcba_primary,
+   The send/stop key is the 34x34 round button inside data-composer-card whose
+   class ends in _primary (background: var(--dsw-alias-button-info-fill)) — the
+   info fill is what the stock UI paints it with, so this is where the Kurisu
+   red lives. Scoped to the composer so a settings/models _primary button keeps
+   its own colour. */
+html[data-ks-polish="on"] [data-composer-card] button[class*="_primary"],
 html[data-ks-polish="on"] :where(button, [role="button"])[data-variant="primary"]:not(:disabled),
 html[data-ks-polish="on"] :where(button, [role="button"])[aria-label*="发送"]:not(:disabled) {
   background-image: linear-gradient(135deg,
@@ -862,7 +852,7 @@ html[data-ks-polish="on"] :where(button, [role="button"])[aria-label*="发送"]:
   box-shadow: 0 4px 18px -8px var(--ks-glow), inset 0 1px 0 rgba(255,255,255,.22);
   transition: transform var(--ks-fast) var(--ks-ease), box-shadow var(--ks-med) var(--ks-ease), background-color var(--ks-med) var(--ks-ease);
 }
-html[data-ks-polish="on"] button.VERcba_primary:hover:not(:disabled),
+html[data-ks-polish="on"] [data-composer-card] button[class*="_primary"]:hover:not(:disabled),
 html[data-ks-polish="on"] :where(button, [role="button"])[data-variant="primary"]:not(:disabled):hover {
   background-image: linear-gradient(135deg,
     color-mix(in srgb, var(--dsw-alias-brand-primary) 88%, white) 0%,
@@ -872,20 +862,20 @@ html[data-ks-polish="on"] :where(button, [role="button"])[data-variant="primary"
 }
 
 /* the composer "+" round button */
-html[data-ks-polish="on"] button.VERcba_add {
+html[data-ks-polish="on"] [data-composer-card] button[class*="_add"] {
   box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--dsw-alias-brand-primary) 24%, transparent);
   transition: transform var(--ks-fast) var(--ks-ease), box-shadow var(--ks-med) var(--ks-ease);
 }
-html[data-ks-polish="on"] button.VERcba_add:hover:not(:disabled) {
+html[data-ks-polish="on"] [data-composer-card] button[class*="_add"]:hover:not(:disabled) {
   box-shadow: 0 0 0 2px var(--ks-glow-soft), 0 0 16px -4px var(--ks-glow);
 }
 
 /* composer toolbar chips (primitives Pill) */
-html[data-ks-polish="on"] div.VERcba_row [class*="pill"] {
+html[data-ks-polish="on"] [data-composer-card] [class*="_row"] [class*="pill"] {
   border: 1px solid transparent;
   transition: border-color var(--ks-med) var(--ks-ease), background-color var(--ks-med) var(--ks-ease), box-shadow var(--ks-med) var(--ks-ease);
 }
-html[data-ks-polish="on"] div.VERcba_row [class*="pill"]:hover {
+html[data-ks-polish="on"] [data-composer-card] [class*="_row"] [class*="pill"]:hover {
   border-color: color-mix(in srgb, var(--dsw-alias-brand-primary) 30%, transparent);
   box-shadow: 0 0 12px -6px var(--ks-glow);
 }
@@ -900,37 +890,25 @@ html[data-ks-polish="on"] div[class*="bubble"] {
    var(--dsw-focus-ring-color, var(--dsw-alias-state-business-primary));
    outline-offset:-2px}. We keep the geometry and only recolor it crimson, so
    no layout shifts. */
-html[data-ks-polish="on"] div.MnhYfG_frame :focus-visible {
+html[data-ks-polish="on"] div[class*="_frame"]:has(> div[class*="_sidebarCol"]) :focus-visible {
   outline: 2px solid var(--dsw-alias-brand-primary);
   outline-offset: -2px;
 }
-html[data-ks-polish="on"] div.MnhYfG_frame :where(input, textarea, [contenteditable="true"]):focus-visible {
+html[data-ks-polish="on"] div[class*="_frame"]:has(> div[class*="_sidebarCol"]) :where(input, textarea, [contenteditable="true"]):focus-visible {
   outline: none;
   box-shadow: 0 0 0 2px var(--ks-glow), inset 0 0 0 1px var(--ks-glow-soft);
 }
 
-/* -- composer / cards: CRT sheen ------------------------------------------ */
-/* Verified shipped selectors: .VERcba_card is the composer panel
-   (dsh-client-ui-conversation.css:183) and .VERcba_row its toolbar row
-   (:208). The sheen is a pseudo-element on the card, pointer-events off. */
-html[data-ks-polish="on"] div.VERcba_card,
+/* -- composer / cards ----------------------------------------------------- */
+/* The composer panel ships a stable hook, data-composer-card, so this skin
+   never has to name its CSS-module class. The module hash changes on every
+   upstream build (VERcba_ -> JZLxKW_ was one such flip) and every rule written
+   against the old hash silently stops matching. Toolbar row = the child that
+   carries the primary/add buttons, reached by [class*="_row"]. */
+html[data-ks-polish="on"] div[data-composer-card],
 html[data-ks-polish="on"] :where([class*="composer"], [class*="inputBox"], [class*="chatInput"]) {
   position: relative;
   isolation: isolate;
-}
-html[data-ks-polish="on"] div.VERcba_card::after,
-html[data-ks-polish="on"] :where([class*="composer"], [class*="inputBox"], [class*="chatInput"])::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  pointer-events: none;
-  border-radius: inherit;
-  background: linear-gradient(115deg, transparent 32%, var(--ks-glow-soft) 48%, transparent 64%);
-  background-size: 260% 100%;
-  background-repeat: no-repeat;
-  opacity: 0;
-  animation: ks-sheen 9s linear infinite;
 }
 
 /* -- scrollbar ------------------------------------------------------------ */
@@ -949,80 +927,38 @@ html[data-ks-polish="on"] ::-webkit-scrollbar-thumb {
 html[data-ks-polish="on"] ::-webkit-scrollbar-thumb:hover {
   background-color: color-mix(in srgb, var(--dsw-alias-brand-primary) 70%, transparent);
 }
-html[data-ks-polish="on"] div.VERcba_card {
+html[data-ks-polish="on"] div[data-composer-card] {
   --dsh-scrollbar-thumb: color-mix(in srgb, var(--dsw-alias-brand-primary) 40%, var(--dsw-alias-scrollbar-bg-l2));
   --dsh-scrollbar-thumb-hover: var(--dsw-alias-scrollbar-hover-l2);
 }
 
 /* -- code / quotes: lab terminal ------------------------------------------ */
-html[data-ks-polish="on"] div.MnhYfG_frame :where(code, pre) {
+html[data-ks-polish="on"] div[class*="_frame"]:has(> div[class*="_sidebarCol"]) :where(code, pre) {
   font-family: "Cascadia Code", "JetBrains Mono", Consolas, "SF Mono", monospace;
 }
-html[data-ks-polish="on"] div.MnhYfG_frame :where(blockquote) {
+html[data-ks-polish="on"] div[class*="_frame"]:has(> div[class*="_sidebarCol"]) :where(blockquote) {
   border-left: 2px solid var(--dsw-alias-brand-primary);
   background: var(--ks-glow-soft);
 }
 
-/* -- divergence meter widget (sidebar footer slot) ------------------------ */
-.ks-meter {
-  display: inline-flex;
-  align-items: center;
-  gap: 7px;
-  height: 26px;
-  padding: 0 10px 0 8px;
-  border: 1px solid color-mix(in srgb, var(--dsw-alias-brand-primary) 32%, transparent);
-  border-radius: 999px;
-  background: color-mix(in srgb, var(--dsw-alias-bg-layer-2) 82%, transparent);
-  color: var(--ks-rose);
-  font-family: "Cascadia Code", "JetBrains Mono", Consolas, monospace;
-  font-size: 11px;
-  line-height: 1;
-  letter-spacing: .06em;
-  cursor: pointer;
-  user-select: none;
-  white-space: nowrap;
-  position: relative;
-  overflow: hidden;
-  transition: border-color var(--ks-med) var(--ks-ease), box-shadow var(--ks-med) var(--ks-ease), transform var(--ks-fast) var(--ks-ease);
-}
-.ks-meter:hover {
-  border-color: var(--dsw-alias-brand-primary);
-  box-shadow: 0 0 14px -4px var(--ks-glow);
-  transform: translateY(-1px);
-}
-.ks-meter:active { transform: translateY(0) scale(.97); }
-.ks-meter .ks-led {
-  width: 9px; height: 9px; flex: none;
-  border-radius: 50%;
-  background: var(--ks-teal);
-  box-shadow: 0 0 10px var(--ks-teal), 0 0 22px -2px var(--ks-teal);
-  animation: ks-led 2.6s ease-in-out infinite;
-}
-.ks-meter[data-flip="true"] .ks-led { background: var(--dsw-alias-state-warn-primary); box-shadow: 0 0 10px var(--dsw-alias-state-warn-primary), 0 0 22px -2px var(--dsw-alias-state-warn-primary); }
-/* the meter itself is the "lamp": an ambient halo that breathes around the pill */
-.ks-meter { animation: ks-meter-glow 3.4s ease-in-out infinite; }
-@keyframes ks-meter-glow {
-  0%, 100% { box-shadow: 0 0 10px -6px var(--ks-teal); }
-  50% { box-shadow: 0 0 20px -4px var(--ks-teal); }
-}
-.ks-meter .ks-digits { animation: ks-digits 5.5s steps(1) infinite; }
-.ks-meter[data-flip="true"] .ks-digits { animation: none; }
-html[data-ks-polish="off"] .ks-meter { display: none; }
 
 /* -- brand mark ------------------------------------------------------------ */
 .ks-mark {
   display: block;
   filter: drop-shadow(0 0 8px color-mix(in srgb, var(--dsw-alias-brand-primary) 70%, transparent));
-  animation: ks-mark-breathe 5.2s ease-in-out infinite;
+}
+
+/* The shipped brand mark is the Amadeus badge: a square webp, not a stroked
+   glyph. A crimson halo around an orange badge reads as mud, and the breathe
+   keyframes were tuned for a thin outline, so the image variant opts out of
+   both and gets its own corner radius to match the app icon. */
+.ks-mark.ks-amadeus {
+  border-radius: 22%;
+  object-fit: contain;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, .45));
+  animation: none;
 }
 html[data-ks-polish="off"] .ks-mark { filter: none; animation: none; }
-@keyframes ks-mark-breathe {
-  0%, 100% { filter: drop-shadow(0 0 5px color-mix(in srgb, var(--dsw-alias-brand-primary) 45%, transparent)); }
-  50% {
-    filter: drop-shadow(0 0 18px color-mix(in srgb, var(--dsw-alias-brand-primary) 95%, transparent))
-            drop-shadow(0 0 34px color-mix(in srgb, var(--dsw-alias-state-business-primary) 60%, transparent));
-  }
-}
 
 /* -- live glow: always-on motion ----------------------------------------- */
 /* Hover-only highlights are invisible until you point at them, which is why a
@@ -1030,24 +966,30 @@ html[data-ks-polish="off"] .ks-mark { filter: none; animation: none; }
    its own. All of it stays gated by html[data-ks-polish="on"] and by
    prefers-reduced-motion. */
 
-/* send key: a radar ping so the primary action reads as live */
-html[data-ks-polish="on"] button.VERcba_primary {
+/* send key: a radar ping so the primary action reads as live.
+   The halo lives on a pseudo-element and animates only transform + opacity, so
+   the compositor can run it without repainting the button every frame. Animating
+   box-shadow spread (the first version) repainted the whole control 60x/s. */
+html[data-ks-polish="on"] [data-composer-card] button[class*="_primary"] {
   position: relative;
+  isolation: isolate;
+}
+html[data-ks-polish="on"] [data-composer-card] button[class*="_primary"]::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  /* z-index 0, not -1: a negative index puts the halo behind the button's own
+     opaque background, and the spread was never visible. */
+  z-index: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--dsw-alias-brand-primary) 58%, transparent);
   animation: ks-ping 3.2s cubic-bezier(.22, .61, .36, 1) infinite;
 }
 @keyframes ks-ping {
-  0% {
-    box-shadow: 0 0 0 0 color-mix(in srgb, var(--dsw-alias-brand-primary) 58%, transparent),
-                inset 0 1px 0 rgba(255,255,255,.34);
-  }
-  60% {
-    box-shadow: 0 0 0 16px transparent,
-                inset 0 1px 0 rgba(255,255,255,.34);
-  }
-  100% {
-    box-shadow: 0 0 0 0 transparent,
-                inset 0 1px 0 rgba(255,255,255,.34);
-  }
+  0% { transform: scale(1); opacity: .58; }
+  60% { transform: scale(1.55); opacity: 0; }
+  100% { transform: scale(1.55); opacity: 0; }
 }
 
 /* composer: a light running around the border (conic ring masked to 1px) */
@@ -1056,7 +998,7 @@ html[data-ks-polish="on"] button.VERcba_primary {
   inherits: false;
   initial-value: 0deg;
 }
-html[data-ks-polish="on"] div.VERcba_card::before {
+html[data-ks-polish="on"] div[data-composer-card]::before {
   content: "";
   position: absolute;
   inset: -1px;
@@ -1074,40 +1016,24 @@ html[data-ks-polish="on"] div.VERcba_card::before {
   mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
   mask-composite: exclude;
   opacity: .9;
+  /* Animating a registered <angle> repaints the whole composer every frame.
+     Idle it does nothing for the reader, so the ring only runs while the
+     composer is focused or hovered. */
   animation: ks-ring 7s linear infinite;
+  animation-play-state: paused;
+}
+html[data-ks-polish="on"] div[data-composer-card]:hover::before,
+html[data-ks-polish="on"] div[data-composer-card]:focus-within::before {
+  animation-play-state: running;
 }
 @keyframes ks-ring { to { --ks-ring: 360deg; } }
-html[data-ks-polish="on"] div.VERcba_card:focus-within::before {
+html[data-ks-polish="on"] div[data-composer-card]:focus-within::before {
   opacity: 1;
   animation-duration: 2.4s;
 }
-html[data-ks-polish="on"] div.VERcba_card:focus-within {
+html[data-ks-polish="on"] div[data-composer-card]:focus-within {
   box-shadow: 0 0 0 1px color-mix(in srgb, var(--dsw-alias-brand-primary) 42%, transparent),
               0 0 26px -8px var(--ks-glow);
-}
-
-/* worldline meter: brighter LED plus a highlight crossing the digits */
-.ks-meter::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  pointer-events: none;
-  background: linear-gradient(100deg, transparent 38%,
-    color-mix(in srgb, var(--dsw-alias-state-business-primary) 42%, transparent) 50%,
-    transparent 62%);
-  background-size: 220% 100%;
-  background-repeat: no-repeat;
-  opacity: 0;
-  animation: ks-meter-scan 4.8s linear infinite;
-}
-.ks-meter .ks-led,
-.ks-meter .ks-digits { position: relative; z-index: 1; }
-@keyframes ks-meter-scan {
-  0% { background-position: 160% 0; opacity: 0; }
-  12% { opacity: .9; }
-  38% { background-position: -60% 0; opacity: 0; }
-  100% { background-position: -60% 0; opacity: 0; }
 }
 
 /* -- settings toggle ------------------------------------------------------- */
@@ -1138,24 +1064,6 @@ html[data-ks-polish="on"] div.VERcba_card:focus-within {
 .ks-toggle-state { color: var(--dsw-alias-label-tertiary); min-width: 12px; }
 
 /* -- keyframes ------------------------------------------------------------ */
-@keyframes ks-led {
-  0%, 100% { opacity: 1; transform: scale(1); }
-  50% { opacity: .3; transform: scale(.78); }
-}
-@keyframes ks-sheen {
-  0% { background-position: 180% 0; opacity: 0; }
-  6% { opacity: .9; }
-  24% { background-position: -80% 0; opacity: 0; }
-  100% { background-position: -80% 0; opacity: 0; }
-}
-@keyframes ks-digits {
-  0%, 93%, 100% { opacity: 1; }
-  94% { opacity: .35; }
-  95% { opacity: 1; }
-  96% { opacity: .5; }
-  97% { opacity: 1; }
-}
-
 /* -- accessibility -------------------------------------------------------- */
 @media (prefers-reduced-motion: reduce) {
   html[data-ks-polish="on"] *,
@@ -1165,8 +1073,6 @@ html[data-ks-polish="on"] div.VERcba_card:focus-within {
     animation-iteration-count: 1 !important;
     transition-duration: .001ms !important;
   }
-  html[data-ks-polish="on"] div.VERcba_card::after,
-  html[data-ks-polish="on"] :where([class*="composer"], [class*="inputBox"], [class*="chatInput"])::after { display: none; }
 }
 `;
 
@@ -1175,6 +1081,7 @@ html[data-ks-polish="on"] div.VERcba_card:focus-within {
 			try {
 				const value = window.localStorage.getItem(STORAGE_KEY);
 				if (value === "none") return "none";
+				if (value === "custom") return "custom";
 				if (value && Object.prototype.hasOwnProperty.call(WALLPAPERS, value)) return value;
 			} catch (error) {
 				/* localStorage may be unavailable */
@@ -1239,6 +1146,37 @@ html[data-ks-polish="on"] div.VERcba_card:focus-within {
 			return next;
 		};
 
+		// How strongly the wallpaper shows. Five steps, scaled in CSS through
+		// --ks-veil / --ks-wash, so switching a step never rebuilds the sheet.
+		const DENSITY_LEVELS = ["faint", "soft", "mid", "strong", "vivid"];
+		const DENSITY_LABELS = { faint: "最淡", soft: "淡", mid: "标准", strong: "浓", vivid: "最浓" };
+
+		const readDensity = () => {
+			try {
+				const v = window.localStorage.getItem(DENSITY_KEY);
+				return DENSITY_LEVELS.indexOf(v) >= 0 ? v : "mid";
+			} catch (error) {
+				return "mid";
+			}
+		};
+
+		const saveDensity = (level) => {
+			try {
+				window.localStorage.setItem(DENSITY_KEY, level);
+			} catch (error) {
+				/* ignore */
+			}
+		};
+
+		const applyDensity = (level) => {
+			const next = DENSITY_LEVELS.indexOf(level) >= 0 ? level : "mid";
+			// Every step sets the attribute, "mid" included: the stylesheet ladder
+			// then owns all five values, so the default cannot drift away from what
+			// buildWallCss() falls back to before this attribute is written.
+			document.documentElement.setAttribute("data-ks-density", next);
+			return next;
+		};
+
 		let wallStyleEl = null;
 
 		// The wallpaper CSS is regenerated only when the selection changes. Each
@@ -1246,38 +1184,52 @@ html[data-ks-polish="on"] div.VERcba_card:focus-within {
 		// than in inherited custom properties.
 		//
 		// Verified from shipped source (dsh-client-ui-layout/lib/client.js:72-91):
-		//   .MnhYfG_frame  — AppFrame, the grid root; the common React parent of
+		//   div[class*="_frame"]:has(> div[class*="_sidebarCol"])  — AppFrame, the grid root; the common React parent of
 		//                     sidebarCol + centerCol. It paints its own opaque
 		//                     background (--dsw-alias-bg-base, or
 		//                     --dsw-specific-sidebar-fill under the Windows
 		//                     title bar), so a body-level wallpaper is hidden.
-		//   .MnhYfG_centerCol — paints --dsw-alias-bg-base on Windows/macOS.
+		//   div[class*="_centerCol"] — paints --dsw-alias-bg-base on Windows/macOS.
+		// Both are matched by class *substring*, not by the full CSS-module name:
+		// the hash prefix is generated per build (it was MnhYfG_ in one release and
+		// PIRFFq_ in the next), so a literal name silently stops matching.
 		// Both are addressed here; `#root > div` is the stable fallback for the
 		// same element when the CSS-module hash changes between builds.
 		const buildWallCss = (wp) => `
+/* The right panel in its fullscreen presentation is a 100vw box anchored to the
+   frame's right edge, and its own box paints nothing — so the conversation
+   column underneath reads straight through the glass. Painting the same
+   wallpaper stack on it gives it the wallpaper instead: the image layer is
+   viewport-fixed, exactly like the frame's, so the two copies line up and the
+   seam is invisible. Without this, fullscreen turns the panel into a window
+   onto the text behind it. */
 html[data-ks-wall="on"] body,
 html[data-ks-wall="on"] #root > div,
-html[data-ks-wall="on"] div.MnhYfG_frame {
+html[data-ks-wall="on"] div[class*="_frame"]:has(> div[class*="_sidebarCol"]),
+html[data-ks-wall="on"] [data-sidebar-right-panel="fullscreen"] {
   background-color: #06080f !important;
   background-image:
+    linear-gradient(var(--ks-veil, rgba(6,8,15,.34)), var(--ks-veil, rgba(6,8,15,.34))),
     radial-gradient(120% 92% at 52% 42%, transparent 54%, rgba(2,4,8,.42) 100%),
     linear-gradient(101deg, rgba(4,6,12,.94) 0%, rgba(6,9,16,.88) 30%, rgba(8,11,20,.70) 52%, rgba(10,13,22,.30) 74%, rgba(7,10,17,.52) 100%),
     radial-gradient(78rem 48rem at 84% 38%, rgba(133,48,64,.24), transparent 62%),
     url("${wp.dark}") !important;
-  background-size: cover, cover, cover, cover;
-  background-position: center, center, center, ${wp.pos};
+  background-size: cover, cover, cover, cover, cover;
+  background-position: center, center, center, center, ${wp.pos};
   background-repeat: no-repeat;
-  background-attachment: scroll, scroll, scroll, fixed;
+  background-attachment: scroll, scroll, scroll, scroll, fixed;
 }
 /* The theme presenter toggles data-ds-dark-theme on <body>, so the light
    variant is selected with body:not([data-ds-dark-theme]). */
 html[data-ks-wall="on"] body:not([data-ds-dark-theme]),
 html[data-ks-wall="on"] body:not([data-ds-dark-theme]) #root > div,
-html[data-ks-wall="on"] body:not([data-ds-dark-theme]) div.MnhYfG_frame {
+html[data-ks-wall="on"] body:not([data-ds-dark-theme]) div[class*="_frame"]:has(> div[class*="_sidebarCol"]),
+html[data-ks-wall="on"] body:not([data-ds-dark-theme]) [data-sidebar-right-panel="fullscreen"] {
   background-color: #f4eee6 !important;
   background-image:
-    radial-gradient(120% 92% at 52% 42%, transparent 70%, rgba(120,86,74,.10) 100%),
-    linear-gradient(101deg, rgba(253,250,246,.74) 0%, rgba(252,248,243,.60) 30%, rgba(250,245,239,.34) 52%, rgba(250,245,239,.08) 74%, rgba(252,248,243,.30) 100%),
+    linear-gradient(var(--ks-veil-light, rgba(252,249,245,.30)), var(--ks-veil-light, rgba(252,249,245,.30))),
+    radial-gradient(120% 92% at 52% 42%, transparent 70%, rgba(120,86,74,.08) 100%),
+    linear-gradient(101deg, rgba(253,250,246,.52) 0%, rgba(252,248,243,.42) 30%, rgba(250,245,239,.24) 52%, rgba(250,245,239,.06) 74%, rgba(252,248,243,.20) 100%),
     radial-gradient(70rem 44rem at 86% 36%, rgba(196,110,104,.14), transparent 60%),
     url("${wp.light}") !important;
 }
@@ -1287,31 +1239,145 @@ html[data-ks-wall="on"] body:not([data-ds-dark-theme]) div.MnhYfG_frame {
    cleared and exactly one scrim is kept on the center column. The
    conversation root's stable hook is its data-phase attribute; its CSS-module
    hash differs per build. */
-html[data-ks-wall="on"] div.MnhYfG_centerCol,
-html[data-ks-wall="on"] #root > div > div.MnhYfG_centerCol {
-  background-color: var(--ks-scrim, rgba(7,10,18,.38)) !important;
+html[data-ks-wall="on"] div[class*="_centerCol"],
+html[data-ks-wall="on"] #root > div > div[class*="_centerCol"] {
+  background-color: var(--ks-wash, rgba(7,10,18,.38)) !important;
   background-image: none !important;
 }
-html[data-ks-wall="on"] body:not([data-ds-dark-theme]) div.MnhYfG_centerCol,
-html[data-ks-wall="on"] body:not([data-ds-dark-theme]) #root > div > div.MnhYfG_centerCol {
-  background-color: var(--ks-scrim-light, rgba(250,246,241,.20)) !important;
+html[data-ks-wall="on"] body:not([data-ds-dark-theme]) div[class*="_centerCol"],
+html[data-ks-wall="on"] body:not([data-ds-dark-theme]) #root > div > div[class*="_centerCol"] {
+  background-color: var(--ks-wash-light, rgba(250,246,241,.24)) !important;
 }
 html[data-ks-wall="on"] div[data-phase],
-html[data-ks-wall="on"] div.MnhYfG_bottomRow {
+html[data-ks-wall="on"] div[class*="_bottomRow"] {
   background-color: transparent !important;
   background-image: none !important;
 }
+/* The composer seat is the box that holds the input card: absolutely positioned,
+   stretched across the conversation column, and given a vertical gradient from
+   transparent to --dsw-alias-bg-base by ConversationRoot.module.css. With an
+   opaque token that gradient reads as a solid slab the height of the input box,
+   sitting on top of the wallpaper. The gradient only exists to fade out text
+   scrolling underneath, so with the wallpaper on it is dropped entirely: the
+   card carries its own background and the column keeps a single wash. */
+html[data-ks-wall="on"] [data-composer-seat],
+html[data-ks-wall="on"] [class*="_composerSeat"] {
+  background: none !important;
+}
+/* The card itself is the last cream slab left. Any alpha above zero still
+   reads as a panel laid over the picture, because the thing behind it is the
+   column wash, not the artwork. So with the wallpaper on the card paints
+   nothing at all and simply inherits the same wash as the body text around it
+   -- which is what 正文遮罩 promises -- and a hairline border keeps the input
+   area legible as a target. The host keeps its own elevation shadow. */
+html[data-ks-wall="on"] [data-composer-card] {
+  background-color: transparent !important;
+  border: 1px solid var(--dsw-alias-border-l2) !important;
+}
+/* The queue dock sits directly above the input card and shares its geometry.
+   Its panel paints --dsw-specific-menu (0.94 alpha) on a ::before behind a 30px
+   menu blur, which with a wallpaper on reads as the one opaque slab left in the
+   column. Thinning that same token to ~36% over the blur keeps every row legible
+   while letting the picture through, so the dock matches the now-transparent
+   card below it instead of capping the column with a lid. */
+html[data-ks-wall="on"] [data-queue-dock] > div::before {
+  background: color-mix(in srgb, var(--dsw-specific-menu) 38%, transparent) !important;
+  -webkit-backdrop-filter: blur(22px) saturate(120%) !important;
+  backdrop-filter: blur(22px) saturate(120%) !important;
+}
 html[data-ks-wall="off"] body,
 html[data-ks-wall="off"] #root > div,
-html[data-ks-wall="off"] div.MnhYfG_frame,
-html[data-ks-wall="off"] div.MnhYfG_centerCol { background-image: none !important; }
+html[data-ks-wall="off"] div[class*="_frame"]:has(> div[class*="_sidebarCol"]),
+html[data-ks-wall="off"] div[class*="_centerCol"],
+html[data-ks-wall="off"] [data-sidebar-right-panel="fullscreen"] { background-image: none !important; }
 
 @media (max-width: 900px) {
   html[data-ks-wall="on"] body,
   html[data-ks-wall="on"] #root > div,
-  html[data-ks-wall="on"] div.MnhYfG_frame { background-position: center, center, center, 68% 38%; }
+  html[data-ks-wall="on"] div[class*="_frame"]:has(> div[class*="_sidebarCol"]),
+  html[data-ks-wall="on"] [data-sidebar-right-panel="fullscreen"] { background-position: center, center, center, 68% 38%, center; }
 }
 `;
+
+		// ------------------------------------------------------- custom wallpaper
+		// A user-picked image lives in IndexedDB as a Blob (localStorage would hit
+		// its ~5MB string quota with one 4K JPEG) and is served to CSS through an
+		// object URL. The image is re-encoded to WebP at a sane resolution first:
+		// the originals in the wallpaper folder are 6000x3375 / 31MB, and CSS only
+		// ever paints one screen of it.
+		const CUSTOM_ID = "custom";
+		const CUSTOM_MAX_EDGE = 3840;
+		let customWall = null;      // { dark, light, thumb, pos, label, hint }
+		let customUrlLive = null;   // object URL to revoke on replace
+
+		const idbOpen = () => new Promise((resolve, reject) => {
+			if (!window.indexedDB) { reject(new Error("indexedDB unavailable")); return; }
+			const req = window.indexedDB.open("dsh-skin-kurisu", 1);
+			req.onupgradeneeded = () => {
+				const db = req.result;
+				if (!db.objectStoreNames.contains("walls")) db.createObjectStore("walls");
+			};
+			req.onsuccess = () => resolve(req.result);
+			req.onerror = () => reject(req.error);
+		});
+
+		const idbRun = async (mode, fn) => {
+			const db = await idbOpen();
+			try {
+				return await new Promise((resolve, reject) => {
+					const tx = db.transaction("walls", mode);
+					const req = fn(tx.objectStore("walls"));
+					req.onsuccess = () => resolve(req.result);
+					req.onerror = () => reject(req.error);
+				});
+			} finally {
+				db.close();
+			}
+		};
+
+		const encodeForWallpaper = async (file) => {
+			const bitmap = await createImageBitmap(file);
+			const scale = Math.min(1, CUSTOM_MAX_EDGE / Math.max(bitmap.width, bitmap.height));
+			const w = Math.max(1, Math.round(bitmap.width * scale));
+			const h = Math.max(1, Math.round(bitmap.height * scale));
+			const canvas = document.createElement("canvas");
+			canvas.width = w;
+			canvas.height = h;
+			canvas.getContext("2d").drawImage(bitmap, 0, 0, w, h);
+			if (bitmap.close) bitmap.close();
+			const blob = await new Promise((resolve) => canvas.toBlob(resolve, "image/webp", 0.9));
+			return blob || file;
+		};
+
+		const installCustomWallpaper = async (file) => {
+			const blob = await encodeForWallpaper(file);
+			await idbRun("readwrite", (store) => store.put(blob, CUSTOM_ID));
+			const url = URL.createObjectURL(blob);
+			if (customUrlLive) URL.revokeObjectURL(customUrlLive);
+			customUrlLive = url;
+			customWall = { dark: url, light: url, thumb: url, pos: "center", label: "自定义", hint: "你说的算" };
+			save(CUSTOM_ID);
+			applyWallpaper(CUSTOM_ID);
+		};
+
+		const dropCustomWallpaper = async () => {
+			try { await idbRun("readwrite", (store) => store.delete(CUSTOM_ID)); } catch (error) {}
+			if (customUrlLive) { URL.revokeObjectURL(customUrlLive); customUrlLive = null; }
+			customWall = null;
+		};
+
+		// Resolves lazily: the very first paint after a restart has no Blob in
+		// memory yet, so applyWallpaper() kicks this off and re-applies.
+		const ensureCustomWall = async () => {
+			if (customWall) return customWall;
+			let blob = null;
+			try { blob = await idbRun("readonly", (store) => store.get(CUSTOM_ID)); } catch (error) { blob = null; }
+			if (!blob) return null;
+			const url = URL.createObjectURL(blob);
+			customUrlLive = url;
+			customWall = { dark: url, light: url, thumb: url, pos: "center", label: "自定义", hint: "你说的算" };
+			return customWall;
+		};
 
 		const applyWallpaper = (id) => {
 			const root = document.documentElement;
@@ -1319,6 +1385,21 @@ html[data-ks-wall="off"] div.MnhYfG_centerCol { background-image: none !importan
 			if (id === "none") {
 				root.setAttribute("data-ks-wall", "off");
 				if (wallStyleEl) wallStyleEl.textContent = "";
+				return;
+			}
+			if (id === CUSTOM_ID) {
+				root.setAttribute("data-ks-wall", "on");
+				if (customWall) {
+					if (wallStyleEl) wallStyleEl.textContent = buildWallCss(customWall);
+					return;
+				}
+				// Cold start: the blob is still in IndexedDB. Show nothing rather
+				// than a flash of the default wallpaper, then apply when it loads.
+				ensureCustomWall().then((wp) => {
+					if (wp && readSaved() === CUSTOM_ID && wallStyleEl) {
+						wallStyleEl.textContent = buildWallCss(wp);
+					}
+				});
 				return;
 			}
 			const wp = WALLPAPERS[id] || WALLPAPERS[DEFAULT_WALLPAPER];
@@ -1339,8 +1420,17 @@ html[data-ks-wall="off"] div.MnhYfG_centerCol { background-image: none !importan
 			apply: applyWallpaper,
 			save,
 			polish: { read: readPolish, save: savePolish, apply: applyPolish },
-			glass: { read: readGlass, save: saveGlass, apply: applyGlass }
+			glass: { read: readGlass, save: saveGlass, apply: applyGlass },
+			density: { read: readDensity, save: saveDensity, apply: applyDensity },
+			custom: { install: installCustomWallpaper, drop: dropCustomWallpaper, ensure: ensureCustomWall }
 		};
+
+		// ---------------------------------------------------------- amadeus mark
+		// The brand mark slot renders a single occupant. Rather than draw an SVG by
+		// hand, the skin ships the Amadeus app badge itself: a 256px WebP inlined
+		// as a data URI so the mark needs no second network request and no file
+		// path that could break when the profile is reinstalled.
+		const AMADEUS_MARK = "data:image/webp;base64,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";
 
 		// ---------------------------------------------------------------- brand
 		// "sidebar.brand.mark" is a documented *single* extension point with
@@ -1351,42 +1441,16 @@ html[data-ks-wall="off"] div.MnhYfG_centerCol { background-image: none !importan
 
 		function KurisuMark(props) {
 			const size = (props && props.size) || 24;
-			const gid = "ks-mark-g-" + ++markSeq;
-			// Both shipped render sites pass only { size }; the hero one also
-			// passes a className that carries its own sizing, so it is preserved.
-			const cls = "ks-mark" + (props && props.className ? " " + props.className : "");
-			return React.createElement(
-				"svg",
-				{
-					className: cls,
-					width: size,
-					height: size,
-					viewBox: "0 0 24 24",
-					"aria-hidden": "true",
-					focusable: "false"
-				},
-				React.createElement(
-					"defs",
-					null,
-					React.createElement(
-						"linearGradient",
-						{ id: gid, x1: "0", y1: "0", x2: "1", y2: "1" },
-						React.createElement("stop", { offset: "0%", stopColor: "var(--dsw-alias-brand-primary)" }),
-						React.createElement("stop", { offset: "100%", stopColor: "var(--dsw-alias-state-business-primary)" })
-					)
-				),
-				React.createElement("rect", { x: 1, y: 1, width: 22, height: 22, rx: 7, fill: "url(#" + gid + ")" }),
-				React.createElement("path", {
-					d: "M12 5 L6.5 18 M12 5 L17.5 18 M8.4 14 h7.2",
-					fill: "none",
-					stroke: "#fff",
-					strokeWidth: 1.8,
-					strokeLinecap: "round",
-					strokeLinejoin: "round",
-					opacity: .95
-				}),
-				React.createElement("circle", { cx: 19, cy: 5.5, r: 1.8, fill: "#fff", opacity: .9 })
-			);
+			const cls = "ks-mark ks-amadeus" + (props && props.className ? " " + props.className : "");
+			return React.createElement("img", {
+				className: cls,
+				src: AMADEUS_MARK,
+				width: size,
+				height: size,
+				alt: "",
+				"aria-hidden": "true",
+				draggable: "false"
+			});
 		}
 
 		// ---------------------------------------------------------------- ui
@@ -1394,11 +1458,36 @@ html[data-ks-wall="off"] div.MnhYfG_centerCol { background-image: none !importan
 			const [active, setActive] = React.useState(readSaved);
 			const [polishOn, setPolishOn] = React.useState(readPolish);
 			const [glass, setGlass] = React.useState(readGlass);
+			const [density, setDensity] = React.useState(readDensity);
+			const [customThumb, setCustomThumb] = React.useState(null);
 			const ctrl = props.controller || controller;
+			const fileRef = React.useRef(null);
+
+			// A saved custom wallpaper lives in IndexedDB, so its thumbnail only
+			// exists once the blob resolves. Read it after mount, and again when a
+			// new file is picked.
+			React.useEffect(() => {
+				let alive = true;
+				ctrl.custom.ensure().then((wp) => {
+					if (alive && wp) setCustomThumb(wp.thumb);
+				}).catch(() => {});
+				return () => { alive = false; };
+			}, []);
+
 			const choose = (id) => {
 				setActive(id);
 				ctrl.save(id);
 				ctrl.apply(id);
+			};
+			const pickFile = () => { if (fileRef.current) fileRef.current.click(); };
+			const onFile = async (event) => {
+				const file = event.target.files && event.target.files[0];
+				event.target.value = "";
+				if (!file) return;
+				await ctrl.custom.install(file);
+				const wp = await ctrl.custom.ensure();
+				if (wp) setCustomThumb(wp.thumb);
+				setActive("custom");
 			};
 			const items = ORDER.concat(["none"]).map((id) => {
 				const none = id === "none";
@@ -1431,6 +1520,49 @@ html[data-ks-wall="off"] div.MnhYfG_centerCol { background-image: none !importan
 				React.createElement(
 					"div",
 					{ className: "ks-glassRow" },
+					React.createElement("span", { className: "ks-glassLabel" }, "自定义壁纸"),
+					React.createElement(
+						"button",
+						{
+							type: "button",
+							className: customThumb ? "ks-thumb" : "ks-thumb ks-none",
+							style: customThumb
+								? { backgroundImage: 'url("' + customThumb + '")', width: "104px", height: "60px" }
+								: { width: "auto", height: "30px", padding: "0 12px" },
+							title: "选一张本机图片当壁纸（会缩放存进浏览器）",
+							"data-active": String(active === "custom"),
+							onClick: () => { pickFile(); }
+						},
+						React.createElement("span", null, customThumb ? "自定义" : "＋ 选择图片…")
+					),
+					customThumb
+						? React.createElement(
+							"button",
+							{
+								type: "button",
+								className: "ks-seg",
+								style: { padding: "0 10px", height: "26px" },
+								title: "清除已保存的自定义壁纸",
+								onClick: async () => {
+									await ctrl.custom.drop();
+									setCustomThumb(null);
+									if (active === "custom") choose(DEFAULT_WALLPAPER);
+								}
+							},
+							React.createElement("span", null, "清除")
+						)
+						: null,
+					React.createElement("input", {
+						ref: fileRef,
+						type: "file",
+						accept: "image/*",
+						style: { display: "none" },
+						onChange: onFile
+					})
+				),
+				React.createElement(
+					"div",
+					{ className: "ks-glassRow" },
 					React.createElement("span", { className: "ks-glassLabel" }, "面板透明度"),
 					React.createElement(
 						"div",
@@ -1456,11 +1588,40 @@ html[data-ks-wall="off"] div.MnhYfG_centerCol { background-image: none !importan
 					)
 				),
 				React.createElement(
+					"div",
+					{ className: "ks-glassRow" },
+					React.createElement("span", { className: "ks-glassLabel" }, "壁纸浓度"),
+					React.createElement(
+						"div",
+						{ className: "ks-seg", role: "group", "aria-label": "壁纸浓度" },
+						DENSITY_LEVELS.map((level) =>
+							React.createElement(
+								"button",
+								{
+									key: level,
+									type: "button",
+									"data-on": String(density === level),
+									"aria-pressed": density === level,
+									title: "壁纸的浓淡：" + DENSITY_LABELS[level],
+									onClick: () => {
+										setDensity(level);
+										ctrl.density.save(level);
+										ctrl.density.apply(level);
+									}
+								},
+								DENSITY_LABELS[level]
+							)
+						)
+					)
+				),
+				React.createElement(
 					"p",
 					{ className: "ks-hint" },
 					active === "none"
 						? "当前只启用配色，不显示壁纸。"
-						: "壁纸会随浅色 / 深色模式自动换图；素材来自本地 wallpaper 图库。"
+						: active === "custom"
+							? "正在用你选的图；换一张或点「清除」回到内置壁纸。"
+							: "每张壁纸深浅色都用同一张；也可以选一张自己的图。"
 				),
 				React.createElement(
 					"button",
@@ -1489,13 +1650,6 @@ html[data-ks-wall="off"] div.MnhYfG_centerCol { background-image: none !importan
 		// steins-gate-nixie-assets (src/sg-nixie.inline.js); this file only drives
 		// its value and load progress. β 世界线按 S;G 设定为 1.130205，7 位有效
 		// 数字 + 1 支小数点管 = 8 支；不再在有效位之后补零。
-		const WORLDLINES = [
-			{ value: "1.130205", label: "β 世界线" },
-			{ value: "1.048596", label: "Steins Gate" },
-			{ value: "0.334581", label: "α 世界线" },
-			{ value: "3.019304", label: "δ 世界线" },
-			{ value: "1.064750", label: "Ω 世界线" }
-		];
 		// 8 tubes = 1 integer + 1 dot + 6 decimals. Every worldline has exactly 7
 		// significant digits, so digitsOf never pads with zeros; the component
 		// leaves a missing position as a DARK tube rather than inventing a zero.
@@ -1534,44 +1688,8 @@ html[data-ks-wall="off"] div.MnhYfG_centerCol { background-image: none !importan
 			meter.lockProgress(Math.max(0, Math.min(1, progress)), BETA_DIGITS);
 		};
 
-		function NixieRow(props) {
-			const digits = digitsOf(props.value);
-			const attach = (el) => {
-				if (!el) return;
-				const paint = () => {
-					if (typeof el.lockProgress === "function") el.lockProgress(1, digits);
-					else window.setTimeout(paint, 60);
-				};
-				paint();
-			};
-			return React.createElement(
-				"button",
-				{
-					type: "button",
-					className: "ks-nixie-row",
-					title: props.label + " · 点击切换世界线",
-					"aria-label": "世界线变动率 " + props.value,
-					onClick: props.onClick
-				},
-				React.createElement("sg-nixie", {
-					ref: attach,
-					tubes: String(V4_TUBES),
-					noignite: "1",
-					value: props.value,
-					style: { "--nx-span": "150px", "--nx-gr": ".13" }
-				})
-			);
-		}
-
-		function DivergenceMeter() {
-			const [index, setIndex] = React.useState(0);
-			const line = WORLDLINES[index % WORLDLINES.length];
-			return React.createElement(NixieRow, {
-				label: line.label,
-				value: line.value,
-				onClick: () => setIndex((i) => (i + 1) % WORLDLINES.length)
-			});
-		}
+		// The sidebar divergence meter used to live here. It is gone: a Web
+		// Component plus three infinite animations bought zero information.
 
 		// ------------------------------------------------- splash takeover
 		// The shipped product splash is built by the web shell *before* plugins
@@ -1584,30 +1702,9 @@ html[data-ks-wall="off"] div.MnhYfG_centerCol { background-image: none !importan
 		// injected before React is available, so it cannot go through a React root.
 		// Keep the two in sync if the badge art changes.
 		let markHtmlSeq = 0;
-		const MARK_HTML = () => {
-			const gid = "ks-boot-mark-g-" + ++markHtmlSeq;
-			return (
-				'<svg class="ks-mark" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true" focusable="false">' +
-				'<defs><linearGradient id="' + gid + '" x1="0" y1="0" x2="1" y2="1">' +
-				'<stop offset="0%" style="stop-color:var(--dsw-alias-brand-primary,#9c3140)"/>' +
-				'<stop offset="100%" style="stop-color:var(--dsw-alias-state-business-primary,#2f8f7c)"/>' +
-				"</linearGradient></defs>" +
-				'<rect x="1" y="1" width="22" height="22" rx="7" fill="url(#' + gid + ')"/>' +
-				'<path d="M12 5 L6.5 18 M12 5 L17.5 18 M8.4 14 h7.2" fill="none" stroke="#fff"' +
-				' stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" opacity="0.95"/>' +
-				'<circle cx="19" cy="5.5" r="1.8" fill="#fff" opacity="0.9"/>' +
-				"</svg>"
-			);
-		};
-		const ARC_MIN = 72;
-		const ARC_SPAN = 216;
-
-		const splashProgress = (spinner) => {
-			if (!spinner) return null;
-			const arc = parseFloat(spinner.style.getPropertyValue("--dsh-boot-arc"));
-			if (!isFinite(arc)) return null;
-			return Math.max(0, Math.min(1, (arc - ARC_MIN) / ARC_SPAN));
-		};
+		const MARK_HTML = () =>
+			'<img class="ks-mark ks-amadeus" width="18" height="18" alt="" aria-hidden="true"' +
+			' draggable="false" src="' + AMADEUS_MARK + '">';
 
 		const takeOverSplash = () => {
 			// The host plugin injects the load screen through the boot table, which is
@@ -1873,15 +1970,7 @@ html[data-ks-wall="off"] div.MnhYfG_centerCol { background-image: none !importan
 		// When it starts dissolving, the host sets data-ks-ready="1" on <html>;
 		// ignite the sidebar meter so the 1.130205 reading visibly travels from
 		// the centre of the screen into its permanent home in the sidebar.
-		const pulseSidebarMeter = () => {
-			const row = document.querySelector(".ks-nixie-row");
-			if (!row) { window.setTimeout(pulseSidebarMeter, 160); return; }
-			row.classList.remove("ks-meter-arrive");
-			// Force a reflow so re-adding the class restarts the keyframes.
-			void row.offsetWidth;
-			row.classList.add("ks-meter-arrive");
-			window.setTimeout(() => row.classList.remove("ks-meter-arrive"), 1500);
-		};
+		// The splash used to hand the reading off to a sidebar meter. The meter is
 		const syncSplashTheme = () => {
 			try {
 				const mount = document.getElementById("ks-loadscreen");
@@ -1923,7 +2012,6 @@ html[data-ks-wall="off"] div.MnhYfG_centerCol { background-image: none !importan
 					// Mark it so a later plugin reload cannot replay the standalone
 					// board once #ks-loadscreen has been removed.
 					try { markBootShown(); } catch (error) {}
-					pulseSidebarMeter();
 				};
 				if (root.getAttribute("data-ks-ready") === "1") { fire(); return; }
 				syncSplashTheme();
@@ -1957,6 +2045,10 @@ html[data-ks-wall="off"] div.MnhYfG_centerCol { background-image: none !importan
 				applyGlass(readGlass());
 				return () => document.documentElement.removeAttribute("data-ks-glass");
 			}, "kurisu-skin: glass level");
+			ctx.effect(() => {
+				applyDensity(readDensity());
+				return () => document.documentElement.removeAttribute("data-ks-density");
+			}, "kurisu-skin: wallpaper density");
 			ctx.effect(() => {
 				wallStyleEl = document.createElement("style");
 				wallStyleEl.dataset.plugin = "dsh-skin-kurisu";
@@ -2037,22 +2129,8 @@ html[data-ks-wall="off"] div.MnhYfG_centerCol { background-image: none !importan
 				}
 			});
 
-			// list slot, replaceRisk "none": adds one tiny widget beside Settings
-			ctx.slots.inject("sidebar.footer.action", () => {
-				try {
-					return ctx.slots.register(
-						{
-							name: "sidebar.footer.action",
-							id: "kurisu-divergence-meter",
-							order: 40,
-							label: "世界线变动率"
-						},
-						(props) => React.createElement(DivergenceMeter, props)
-					);
-				} catch (error) {
-					return function () {};
-				}
-			});
+			// (The sidebar divergence meter is gone — it was decoration that cost
+			// a Web Component plus three infinite animations for no information.)
 
 			// single brand-mark extension point: replaces the shipped fish logo.
 			// "single" slots allow one occupant per priority, and the lowest
@@ -2104,49 +2182,51 @@ html[data-ks-wall="off"] div.MnhYfG_centerCol { background-image: none !importan
 			[400, 1500, 4000, 8000].forEach(function (ms) {
 				window.setTimeout(ksToggleMirror, ms);
 			});
-			window.setInterval(ksToggleMirror, 5000);
+			// 5s was needless: the inline MutationObserver below already catches the
+			// icon swap, so the slow tick only needs to heal a re-created toggle.
+			window.setInterval(ksToggleMirror, 30000);
 		}
 
 		// Marks the sidebar "DS Bot" chip so CSS can theme its glyph. Retried a few
 		// times because the sidebar paints after activation.
+		// Marks the sidebar "DS Bot" chip so CSS can theme its glyph. Retried a few
+		// times because the sidebar paints after activation.
 		const tagBotChip = () => {
 			try {
-				const all = document.querySelectorAll('body *, [aria-label*="DS Bot"], [title*="DS Bot"]');
-				for (let i = 0; i < all.length; i += 1) {
-					const el = all[i];
-					const txt = String(el.textContent || "").replace(/\s+/g, " ").trim();
-					if (!txt.startsWith("DS Bot") || txt.length > 14) continue;
-					const r = el.getBoundingClientRect();
-					if (r.height < 10 || r.height > 60) continue;
-					let node = el;
+				const hits = [];
+				const labeled = document.querySelectorAll('[aria-label*="DS Bot"], [title*="DS Bot"]');
+				Array.prototype.forEach.call(labeled, (el) => hits.push(el));
+				// Text walk scoped to the sidebar: a full `body *` sweep ran on every
+				// retry at boot and touched every node in the app just to find one chip.
+				const sidebar = document.querySelector('div[class*="_sidebarCol"], #root > div > div[class*="_sidebarCol"]');
+				if (sidebar) {
+					const walker = document.createTreeWalker(sidebar, NodeFilter.SHOW_TEXT, null);
+					let node;
+					while ((node = walker.nextNode())) {
+						const txt = String(node.nodeValue || "").replace(/\s+/g, " ").trim();
+						if (!txt.startsWith("DS Bot")) continue;
+						const el = node.parentElement;
+						if (!el) continue;
+						const r = el.getBoundingClientRect();
+						if (r.height < 10 || r.height > 60) continue;
+						hits.push(el);
+						break;
+					}
+				}
+				if (!hits.length) return false;
+				hits.forEach((hit) => {
+					let node = hit;
 					let depth = 0;
 					while (node && node !== document.body && depth < 3) {
 						node.classList.add("ks-bot-chip");
 						node = node.parentElement;
 						depth += 1;
 					}
-					return true;
-				}
+				});
+				return true;
 			} catch (error) {
 				return false;
 			}
-			// geometry pass: the bot chip lives in the same footer container as our
-			// nixie row, so tag foreign glyphs there without relying on any text.
-			try {
-				const meter = document.querySelector(".ks-nixie-row");
-				if (meter) {
-					let box = meter.parentElement;
-					for (let up = 0; up < 2 && box && box.parentElement; up += 1) box = box.parentElement;
-					if (box) {
-						Array.prototype.forEach.call(box.querySelectorAll("svg, img"), (el) => {
-							if (el.closest(".ks-nixie-row")) return;
-							el.classList.add("ks-bot-chip");
-						});
-						return true;
-					}
-				}
-			} catch (error) {}
-			return false;
 		};
 
 				// Re-posts the boot timeline the injected load screen left in localStorage, so a
@@ -2156,7 +2236,11 @@ html[data-ks-wall="off"] div.MnhYfG_centerCol { background-image: none !importan
 				const stored = localStorage.getItem("ks-boot-tl");
 				if (!stored) return;
 				if (stored.indexOf("consumed:") === 0) return;
-				fetch("http://127.0.0.1:8791/report", { method: "POST", mode: "no-cors", body: stored }).catch(function () {});
+				// Opt-in: the collector only exists on the author's machine, so a normal
+				// install would fire a doomed request on every boot.
+				if (localStorage.getItem("ks-boot-probe") === "1") {
+					fetch("http://127.0.0.1:8791/report", { method: "POST", mode: "no-cors", body: stored }).catch(function () {});
+				}
 				localStorage.setItem("ks-boot-tl", "consumed:" + stored);
 			} catch (error) {}
 		};
@@ -2165,6 +2249,13 @@ html[data-ks-wall="off"] div.MnhYfG_centerCol { background-image: none !importan
 		// where React put it, so its delegated click handler keeps working.
 		const ksToggleMirror = () => {
 			try {
+				// macOS: the real button already lives at the sidebar's top-right, and
+				// mirroring it to the viewport corner parks it on the traffic lights.
+				if (document.documentElement.getAttribute("data-platform") === "darwin") {
+					const stale = document.querySelector(".ks-toggle-mirror");
+					if (stale) stale.remove();
+					return true;
+				}
 				const src = document.querySelector('[class*="_toggle"]:not(.ks-toggle-mirror)');
 				if (!src) return false;
 				let mirror = document.querySelector('.ks-toggle-mirror');
@@ -2188,7 +2279,10 @@ html[data-ks-wall="off"] div.MnhYfG_centerCol { background-image: none !importan
 					} catch (e) {}
 				}
 				src.classList.add('ks-toggle-source');
-				mirror.innerHTML = src.innerHTML;
+				// Only touch the DOM when the glyph actually changed: the previous
+				// version reassigned innerHTML on every 5s tick, which re-parsed the
+				// icon set and rebuilt the node even when nothing had moved.
+				if (mirror.innerHTML !== src.innerHTML) mirror.innerHTML = src.innerHTML;
 				["aria-label", "title", "aria-expanded"].forEach(function (a) {
 					const v = src.getAttribute(a);
 					if (v) mirror.setAttribute(a, v);

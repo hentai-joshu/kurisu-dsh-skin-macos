@@ -49,9 +49,12 @@ const LOAD_CSS = `
   color-scheme: dark;
   pointer-events: none;
   background-color: #06080f;
-  /* defaults = night; overridden per saved wallpaper id below */
+  /* defaults = night; overridden per saved wallpaper id below.
+     One image per wallpaper: since the skin stopped swapping art by OS theme,
+     the light variant just aliases the same layer instead of inlining the same
+     webp a second time (that duplication was ~500 KB of the host bundle). */
   --ks-wall: url("{{WALL_NIGHT}}");
-  --ks-wall-light: url("{{WALL_DAY}}");
+  --ks-wall-light: var(--ks-wall);
   --ks-wall-pos: 76% 42%;
   --phos: #3ed9c5;
   --phos-dim: #1c6e66;
@@ -81,13 +84,13 @@ const LOAD_CSS = `
   transition: opacity .7s ease;
 }
 #ks-loadscreen[data-ks-wall="day"] {
-  --ks-wall: url("{{WALL_DAY}}"); --ks-wall-light: url("{{WALL_DAY}}"); --ks-wall-pos: 72% 38%;
+  --ks-wall: url("{{WALL_DAY}}"); --ks-wall-light: var(--ks-wall); --ks-wall-pos: 72% 38%;
 }
 #ks-loadscreen[data-ks-wall="dusk"] {
-  --ks-wall: url("{{WALL_DUSK}}"); --ks-wall-light: url("{{WALL_DUSK}}"); --ks-wall-pos: 70% 44%;
+  --ks-wall: url("{{WALL_DUSK}}"); --ks-wall-light: var(--ks-wall); --ks-wall-pos: 70% 44%;
 }
 #ks-loadscreen[data-ks-wall="library"] {
-  --ks-wall: url("{{WALL_LIBRARY}}"); --ks-wall-light: url("{{WALL_LIBRARY}}"); --ks-wall-pos: 62% 42%;
+  --ks-wall: url("{{WALL_LIBRARY}}"); --ks-wall-light: var(--ks-wall); --ks-wall-pos: 62% 42%;
 }
 #ks-loadscreen[data-ks-wall="none"] { background-image: none !important; }
 #ks-loadscreen[data-ks-wall="none"][data-ks-light="1"] { background-image: none !important; }
@@ -462,8 +465,13 @@ const SEQUENCE_JS = `
           native: NATIVE_SEEN, reduced: REDUCED ? 1 : 0,
           totalTypeSeconds: +TOTAL_T.toFixed(2), events: this.events });
         try { WIN.localStorage.setItem("ks-boot-tl", payload); } catch (e2) {}
-        try { WIN.fetch("http://127.0.0.1:8791/report", { method:"POST", mode:"no-cors", body:payload }); } catch (e3) {}
-        try { if (WIN.navigator.sendBeacon) WIN.navigator.sendBeacon("http://127.0.0.1:8791/report", payload); } catch (e4) {}
+        // Opt-in probe: 127.0.0.1:8791 only exists on the author's machine.
+        try {
+          if (WIN.localStorage.getItem("ks-boot-probe") === "1") {
+            WIN.fetch("http://127.0.0.1:8791/report", { method:"POST", mode:"no-cors", body:payload });
+            if (WIN.navigator.sendBeacon) WIN.navigator.sendBeacon("http://127.0.0.1:8791/report", payload);
+          }
+        } catch (e3) {}
       } catch (e) {}
     }
   };
