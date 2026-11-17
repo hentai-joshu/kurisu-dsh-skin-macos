@@ -2,6 +2,8 @@
 
 牧濑红莉栖（Makise Kurisu / Amadeus）主题的 DSH 插件（plugin）。深色是「夜航列车」的深蓝与绯红，浅色是实验室白与暖奶油，交互强调色用红莉栖的酒红（`#9c3140` 系）。壁纸取自本机 `wallpaper-tool/images` 图库，四张内置壁纸各自深色、浅色都用同一张（不再随系统深浅色换图），另可自选一张。
 
+> **本仓库是基于 [kengoljw/kurisu-dsh-skin](https://github.com/kengoljw/kurisu-dsh-skin) v1.12.7 的 macOS / Linux 适配版。** 上游的原始代码以 MIT 使用，作者为 kengoljw；本仓库保留其完整提交历史，适配部分在其之上修改。
+
 本文只保留骨干要点与 macOS 适配说明。
 
 ## 1. 功能
@@ -139,7 +141,8 @@ kurisu-skin/
 
 ## 7. 素材与授权
 
+- 上游：[kengoljw/kurisu-dsh-skin](https://github.com/kengoljw/kurisu-dsh-skin) v1.12.7，作者 kengoljw，原始代码以 MIT 使用。本仓库是它在 macOS / Linux 上的适配版，保留上游提交历史。
 - 角色：牧濑红莉栖 / Makise Kurisu，出自《Steins;Gate》（5pb. / Nitroplus）。本皮肤是非商业同人主题，角色与插画版权归原作者所有。
-- 壁纸来自本机 `wallpaper-tool/images` 既有收藏；皮肤只做裁切、压缩与色罩处理。
+- 壁纸来自本机 `wallpaper-tool/images` 既有收藏（上游作者的构建目录）；皮肤只做裁切、压缩与色罩处理。
 - 字体 Nixie One（SIL OFL 1.1，许可见 `assets/nixie-one-OFL.txt`）；辉光管字形源自 owenisas/steins-gate-world-line（MIT）。
 - 代码（plugin / build / preview）以 MIT 使用。
